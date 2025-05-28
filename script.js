@@ -1,5 +1,5 @@
 const links = {
-  dialog: "https://your-dialog-card-link.com",
+  dialog: "https://wa.me/+94767861594?text=Dialog+card+for+free+my+usarmeme=",
   hutch: "https://your-hutch-card-link.com",
   mobitel: "https://your-mobitel-card-link.com",
   dialogtv: "https://your-dialog-tv-link.com",
