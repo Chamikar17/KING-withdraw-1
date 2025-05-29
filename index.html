@@ -93,17 +93,19 @@
 
   <div class="card-buttons" id="cardOptions" style="display:none;">
     <button class="card-button" onclick="selectCard('Dialog')">
-      <img src="https://i.postimg.cc/9FQhFcQS/dialog-logo-png-seeklogo-203576.png" alt="Dialog"> Dialog Card
+      <img src="https://i.imgur.com/VXzG2uk.png"> Dialog Card
     </button>
     <button class="card-button" onclick="selectCard('Hutch')">
-      <img src="https://i.postimg.cc/gcDpWxm8/hutch-logo-png-seeklogo-323552.png" alt="Hutch"> Hutch Card
+      <img src="https://i.imgur.com/VXzG2uk.png"> Hutch Card
     </button>
-    <div class="card-buttons" id="cardOptions" style="display:none;">
     <button class="card-button" onclick="selectCard('Mobitel')">
-      <img src="https://i.postimg.cc/9FQhFcQS/dialog-logo-png-seeklogo-203576.png" alt="Dialog"> Mobitel card
+      <img src="https://i.imgur.com/VXzG2uk.png"> Mobitel Card
     </button>
-    <button class="card-button" onclick="selectCard('Hutch')">
-      <img src="https://i.postimg.cc/gcDpWxm8/hutch-logo-png-seeklogo-323552.png" alt="FF id Top Up"> FF id Top up
+    <button class="card-button" onclick="selectCard('FF')">
+      <img src="https://i.imgur.com/VXzG2uk.png"> FF ID Top-up
+    </button>
+    <button class="card-button" onclick="selectCard('TV')">
+      <img src="https://i.imgur.com/VXzG2uk.png"> Dialog TV Reload
     </button>
   </div>
 
@@ -112,8 +114,8 @@
     <img id="cardImage" src="" alt="Card Image">
     <form id="withdrawForm">
       <input type="text" id="name" placeholder="Your Name" required>
-      <input type="text" id="number" placeholder="Massage" required>
-      <input type="text" id="message" placeholder="Phone Number" required>
+      <input type="text" id="number" placeholder="" required>
+      <input type="text" id="message" placeholder="Message" required>
       <input type="text" id="time" readonly>
       <input type="submit" id="submitBtn" value="Submit">
     </form>
@@ -125,9 +127,18 @@
     emailjs.init("JxcwLhzOOhD35rRUH");
 
     const form = document.getElementById("withdrawForm");
+    const numberInput = document.getElementById("number");
     const formContainer = document.getElementById("formContainer");
     const cardImage = document.getElementById("cardImage");
     const formTitle = document.getElementById("formTitle");
+
+    const imageMap = {
+      "Dialog": "https://i.imgur.com/VXzG2uk.png",
+      "Hutch": "https://i.imgur.com/VXzG2uk.png",
+      "Mobitel": "https://i.imgur.com/VXzG2uk.png",
+      "FF": "https://i.imgur.com/VXzG2uk.png",
+      "TV": "https://i.imgur.com/VXzG2uk.png"
+    };
 
     function showCardOptions() {
       document.getElementById("cardOptions").style.display = "block";
@@ -139,12 +150,16 @@
       const now = new Date().toLocaleString();
       document.getElementById("time").value = now;
 
-      if (type === "Dialog") {
-        formTitle.innerText = "Dialog Reload";
-        cardImage.src = "https://i.postimg.cc/9FQhFcQS/dialog-logo-png-seeklogo-203576.png";
-      } else if (type === "Hutch") {
-        formTitle.innerText = "Hutch Reload";
-        cardImage.src = "https://i.postimg.cc/gcDpWxm8/hutch-logo-png-seeklogo-323552.png";
+      formTitle.innerText = type + " Reload";
+      cardImage.src = imageMap[type];
+
+      // Change input placeholder based on type
+      if (type === "FF") {
+        numberInput.placeholder = "Enter your Free Fire ID";
+      } else if (type === "TV") {
+        numberInput.placeholder = "Enter your Dialog TV Number";
+      } else {
+        numberInput.placeholder = "Enter your Phone Number";
       }
     }
 
@@ -161,8 +176,6 @@
       emailjs.send("service_2wht3tb", "template_jrstb44", data)
         .then(() => {
           alert("✅ Withdraw request sent successfully!");
-          alert("ඔබගෙ යිල්ලිම පැය 24 ක් ඇතුලත යිටු වෙනු ඇත")
-          alert("Thank you!")
           form.reset();
           formContainer.style.display = "none";
         })
