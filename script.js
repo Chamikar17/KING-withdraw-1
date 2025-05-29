@@ -1,20 +1,62 @@
-<script>
-  function showWithdrawOptions() {
-    document.getElementById("withdrawOptions").style.display = "block";
-  }
 
-  function openForm(type) {
-    document.getElementById("withdrawOptions").style.display = "none";
+const formContainer = document.getElementById("formContainer");
+const formTitle = document.getElementById("formTitle");
+const numberInput = document.getElementById("number");
+const cardImage = document.getElementById("cardImage");
 
-    // Set title depending on type
-    const titleInput = document.querySelector('input[name="title"]');
-    if (type === 'dialog') {
-      titleInput.value = 'Dialog Reload';
-    } else if (type === 'hutch') {
-      titleInput.value = 'Hutch Reload';
+const imageMap = {
+  Dialog: "dialog.png",
+  Hutch: "hutch.png",
+  Mobitel: "mobitel.png",
+  FF: "ff.png",
+  TV: "tv.png"
+};
+
+function showCardOptions() {
+  document.querySelector(".card-options").style.display = "block";
+}
+
+function selectCard(type) {
+  formContainer.style.display = "block";
+  const now = new Date().toLocaleString();
+  document.getElementById("time").value = now;
+  formTitle.innerText = type + " Reload";
+  cardImage.src = imageMap[type];
+  const jemPackSelect = document.getElementById("jemPack");
+
+  if (type === "FF") {
+    numberInput.placeholder = "Enter your Free Fire ID";
+    jemPackSelect.style.display = "block";
+    jemPackSelect.required = true;
+  } else {
+    if (type === "TV") {
+      numberInput.placeholder = "Enter your Dialog TV Number";
+    } else {
+      numberInput.placeholder = "Enter your Phone Number";
     }
-
-    // Show the main form
-    document.getElementById("withdrawForm").style.display = "block";
+    jemPackSelect.style.display = "none";
+    jemPackSelect.required = false;
   }
-</script>
+}
+
+document.getElementById("withdrawForm").addEventListener("submit", function(e) {
+  e.preventDefault();
+  const data = {
+    name: document.getElementById("name").value,
+    number: document.getElementById("number").value,
+    message: document.getElementById("message").value,
+    time: document.getElementById("time").value,
+    title: formTitle.innerText,
+    jemPack: document.getElementById("jemPack").value || "N/A"
+  };
+
+  emailjs.send("service_3pnjxxg", "template_jrstb44", data, "DILCPulrx3UIR_7KL")
+    .then(() => {
+      alert("Withdraw request sent!");
+      document.getElementById("withdrawForm").reset();
+      document.getElementById("jemPack").style.display = "none";
+    })
+    .catch((error) => {
+      alert("Error sending: " + error);
+    });
+});
