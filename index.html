@@ -1,39 +1,129 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  
-    
-      <input type="text" name="time" id="time"> <!-- Hidden auto time -->
+  <meta charset="UTF-8">
+  <title>Email Form Submit</title>
+  <style>
+    body {
+      background: #111;
+      color: white;
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+    .field {
+      margin-bottom: 10px;
+    }
+    label {
+      display: block;
+      margin-bottom: 3px;
+    }
+    input {
+      width: 300px;
+      padding: 8px;
+      border: none;
+      border-radius: 5px;
+    }
+    #button {
+      background: #00ff00;
+      color: black;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+    #successDialog {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: #00aa00;
+      color: white;
+      padding: 15px 25px;
+      border-radius: 10px;
+      display: none;
+      z-index: 1000;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
 
-    
-      <form id="form">
-  <div class="field">
-    <label for="name">name</label>
-    <input type="text" name="name" id="name">form
-  </div>
-  <div class="field">
-    <label for="time">time</label>
-    <input type="text" name="time" id="time">
-  </div>
-  <div class="field">
-    <label for="message">message</label>
-    <input type="text" name="message" id="message">
-  </div>
-  <div class="field">
-    <label for="title">title</label>
-    <input type="text" name="title" id="title">
-  </div>
-  <div class="field">
-    <label for="number">number</label>
-    <input type="text" name="number" id="number">
-  </div>
+  <div id="successDialog">✅ Submit Success!</div>
 
-  <input type="submit" id="button" value="Send Email" >
-</form>
+  <h2>Submit Form</h2>
+  <form id="form">
+    <div class="field">
+      <label for="name">Name</label>
+      <input type="text" name="name" id="name" required>
+    </div>
+    <div class="field">
+      <label for="time">Time (Auto)</label>
+      <input type="text" name="time" id="time" readonly>
+    </div>
+    <div class="field">
+      <label for="message">Message</label>
+      <input type="text" name="message" id="message" required>
+    </div>
+    <div class="field">
+      <label for="title">Title</label>
+      <input type="text" name="title" id="title" required>
+    </div>
+    <div class="field">
+      <label for="number">Number</label>
+      <input type="text" name="number" id="number" required>
+    </div>
+    <input type="submit" id="button" value="Send Email">
+  </form>
 
-<script type="text/javascript"
-  src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+  <script>
+    emailjs.init('JxcwLhzOOhD35rRUH'); // Your EmailJS public key
 
-<script type="text/javascript">
-  emailjs.init('JxcwLhzOOhD35rRUH')
-</script
+    const form = document.getElementById('form');
+    const timeInput = document.getElementById('time');
+    const successDialog = document.getElementById('successDialog');
+
+    // 🕒 Set current time on page load
+    function setTime() {
+      const now = new Date();
+      const formatted = now.toLocaleString();
+      timeInput.value = formatted;
+    }
+    setTime(); // set on load
+
+    // 💌 Handle form submit
+    form.addEventListener('submit', function(event) {
+      event.preventDefault();
+      setTime(); // update time before sending
+
+      const formData = {
+        name: document.getElementById("name").value,
+        time: timeInput.value,
+        message: document.getElementById("message").value,
+        title: document.getElementById("title").value,
+        number: document.getElementById("number").value,
+      };
+
+      emailjs.send("service_2wht3tb", "template_jrstb44", formData)
+        .then((response) => {
+          console.log("✅ Email sent!", response);
+          showSuccess();
+          form.reset(); // Clear form
+          setTime(); // Re-set time after reset
+        })
+        .catch((error) => {
+          console.error("❌ Failed to send email:", error);
+          alert("❌ Failed to send email. Check console.");
+        });
+    });
+
+    // 🎉 Show dialog message
+    function showSuccess() {
+      successDialog.style.display = "block";
+      setTimeout(() => {
+        successDialog.style.display = "none";
+      }, 3000); // 3 seconds
+    }
+  </script>
+
+</body>
+</html>
