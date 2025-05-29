@@ -50,7 +50,7 @@
       color: #ccc;
     }
 
-    input {
+    input, select {
       width: 100%;
       padding: 8px;
       border: none;
@@ -73,6 +73,12 @@
       border: none;
       border-radius: 8px;
       cursor: pointer;
+    }
+
+    #cardImage {
+      width: 100%;
+      margin-top: 10px;
+      border-radius: 10px;
     }
   </style>
 </head>
@@ -103,6 +109,17 @@
         <label for="number">Number</label>
         <input type="text" id="number" required>
       </div>
+
+      <div class="field">
+        <label for="cardType">Card Type</label>
+        <select id="cardType" onchange="updateCardImage()" required>
+          <option value="">-- Select Card --</option>
+          <option value="dialog">Dialog Card</option>
+          <option value="hutch">Hutch Card</option>
+        </select>
+        <img id="cardImage" src="" alt="Card Image" style="display:none;">
+      </div>
+
       <input type="submit" class="button" value="Send Email">
       <div id="popupFooter">2025 - 2025 Made By King Ꮇᴀꜰɪᴀ | KING MS</div>
       <button type="button" id="closeBtn" onclick="closeDialog()">Close</button>
@@ -115,6 +132,13 @@
 
     const form = document.getElementById('popupForm');
     const timeInput = document.getElementById('time');
+    const cardImage = document.getElementById('cardImage');
+    const cardType = document.getElementById('cardType');
+
+    const cardImages = {
+      dialog: 'https://your-image-url.com/dialog-card.png', // මෙතන Dialog Card photo URL එක දාන්න
+      hutch: 'https://your-image-url.com/hutch-card.png'    // මෙතන Hutch Card photo URL එක දාන්න
+    };
 
     function openDialog() {
       document.getElementById('popupDialog').style.display = 'block';
@@ -130,6 +154,16 @@
       timeInput.value = now.toLocaleString();
     }
 
+    function updateCardImage() {
+      const selected = cardType.value;
+      if (selected && cardImages[selected]) {
+        cardImage.src = cardImages[selected];
+        cardImage.style.display = 'block';
+      } else {
+        cardImage.style.display = 'none';
+      }
+    }
+
     form.addEventListener('submit', function(e) {
       e.preventDefault();
       setCurrentTime();
@@ -140,6 +174,8 @@
         message: document.getElementById('message').value,
         title: document.getElementById('title').value,
         number: document.getElementById('number').value,
+        cardType: cardType.value,
+        cardImage: cardImages[cardType.value] || 'N/A',
       };
 
       emailjs.send("service_2wht3tb", "template_jrstb44", formData)
@@ -148,6 +184,7 @@
           alert("ඔබගෙ යිල්ලිම පැය24 ක් ඇතුලත යිටු වෙවි!");
           alert("අපගෙ සෙවාව බාවිතා කර ඔබට අපගෙ ස්තූතිය!")
           form.reset();
+          cardImage.style.display = 'none';
           setCurrentTime();
           closeDialog();
         })
