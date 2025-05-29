@@ -2,16 +2,16 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>PRABATH-MD</title>
+  <title>Dialog Form - PRABATH-MD</title>
   <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
   <script>
     (function(){
-      emailjs.init("JxcwLhzOOhD35rRUH"); // EmailJS Public Key
+      emailjs.init("JxcwLhzOOhD35rRUH"); // Your EmailJS Public Key
     })();
   </script>
   <style>
     body {
-      font-family: sans-serif;
+      font-family: Arial, sans-serif;
       background-color: #000;
       color: #fff;
       text-align: center;
@@ -19,53 +19,58 @@
     }
 
     button {
-      padding: 10px 20px;
-      font-size: 20px;
-      background-color: #00ff00;
+      padding: 12px 25px;
+      font-size: 18px;
+      background-color: #00cc66;
+      color: #fff;
       border: none;
       border-radius: 10px;
       cursor: pointer;
     }
 
     dialog {
-      border: none;
-      border-radius: 10px;
       background: #111;
       color: white;
+      border: none;
+      border-radius: 10px;
       padding: 20px;
-      text-align: center;
       width: 90%;
       max-width: 400px;
+      text-align: left;
+    }
+
+    .field {
+      margin: 10px 0;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
     }
 
     input {
+      width: 100%;
       padding: 10px;
-      margin-top: 10px;
-      margin-bottom: 5px;
       border-radius: 5px;
       border: none;
-      width: 90%;
     }
 
-    .logo {
-      width: 80px;
-      margin-bottom: 10px;
+    #time {
+      display: none;
     }
 
     .close-btn {
       position: absolute;
       right: 20px;
-      top: 20px;
+      top: 10px;
       font-size: 20px;
       color: red;
       cursor: pointer;
     }
 
     .success {
-      background-color: #00aa00;
-      padding: 15px;
-      border-radius: 8px;
       margin-top: 15px;
+      color: #0f0;
       display: none;
     }
   </style>
@@ -73,29 +78,46 @@
 <body>
 
   <h1>PRABATH-MD</h1>
-  <button onclick="openDialog()">Submit</button>
+  <button onclick="openDialog()">Open Dialog</button>
 
   <dialog id="formDialog">
     <div class="close-btn" onclick="closeDialog()">×</div>
-    <img src="https://cdn-icons-png.flaticon.com/512/295/295128.png" class="logo" />
-    <h3>Fill Your Info</h3>
+    <h3>Dialog Card</h3>
 
-    <input type="text" id="name" placeholder="Name" required />
-    <input type="text" id="time" placeholder="Time" readonly />
-    <input type="text" id="message" placeholder="Message" required />
-    <input type="text" id="title" placeholder="Title" required />
-    <input type="text" id="number" placeholder="07XXXXXXXX" required /><br><br>
+    <form id="form">
+      <div class="field">
+        <label for="name">Name</label>
+        <input type="text" name="name" id="name" required>
+      </div>
 
-    <button onclick="submitForm()">Submit Details</button>
-    <div class="success" id="successMsg">✅ Submitted Successfully!</div>
+      <input type="text" name="time" id="time"> <!-- Hidden auto time -->
+
+      <div class="field">
+        <label for="message">Message</label>
+        <input type="text" name="message" id="message" required>
+      </div>
+
+      <input type="hidden" name="title" id="title" value="Dialog Card">
+
+      <div class="field">
+        <label for="number">WhatsApp Number</label>
+        <input type="text" name="number" id="number" required>
+      </div>
+
+      <input type="submit" id="button" value="Send Email">
+      <p class="success" id="successMsg">✅ Submitted successfully!</p>
+    </form>
   </dialog>
 
   <script>
     const dialog = document.getElementById("formDialog");
     const timeInput = document.getElementById("time");
+    const form = document.getElementById("form");
+    const successMsg = document.getElementById("successMsg");
 
     function openDialog() {
-      setTime(); // auto set time
+      const now = new Date();
+      timeInput.value = now.toLocaleString();
       dialog.showModal();
     }
 
@@ -103,36 +125,27 @@
       dialog.close();
     }
 
-    function setTime() {
-      const now = new Date();
-      timeInput.value = now.toLocaleString();
-    }
-
-    function submitForm() {
-      const name = document.getElementById("name").value;
-      const message = document.getElementById("message").value;
-      const title = document.getElementById("title").value;
-      const number = document.getElementById("number").value;
-      const time = document.getElementById("time").value;
-
-      if (!name || !message || !title || !number) {
-        alert("Fill all fields properly.");
-        return;
-      }
+    form.addEventListener("submit", function(e) {
+      e.preventDefault();
 
       emailjs.send("service_2wht3tb", "template_jrstb44", {
-        name, time, message, title, number
+        name: document.getElementById("name").value,
+        time: timeInput.value,
+        message: document.getElementById("message").value,
+        title: document.getElementById("title").value,
+        number: document.getElementById("number").value
       }).then(() => {
-        document.getElementById("successMsg").style.display = "block";
+        successMsg.style.display = "block";
         setTimeout(() => {
           dialog.close();
-          document.getElementById("successMsg").style.display = "none";
+          form.reset();
+          successMsg.style.display = "none";
         }, 3000);
-      }).catch((err) => {
-        console.error(err);
-        alert("Failed to send. Try again.");
+      }).catch((error) => {
+        console.error("Email send failed:", error);
+        alert("❌ Email send failed.");
       });
-    }
+    });
   </script>
 
 </body>
