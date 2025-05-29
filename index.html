@@ -1,14 +1,20 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Email Form Submit</title>
+  <title>Email & Dialog Submit</title>
+  <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
+  <script>
+    (function(){
+      emailjs.init("JxcwLhzOOhD35rRUH");
+    })();
+  </script>
   <style>
     body {
       background: #111;
       color: white;
       font-family: Arial, sans-serif;
       padding: 20px;
+      text-align: center;
     }
     .field {
       margin-bottom: 10px;
@@ -22,13 +28,17 @@
       padding: 8px;
       border: none;
       border-radius: 5px;
+      font-size: 16px;
     }
-    #button {
+    #button, .dialog-button {
       background: #00ff00;
       color: black;
       font-weight: bold;
       cursor: pointer;
       margin-top: 10px;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 10px;
     }
     #successDialog {
       position: fixed;
@@ -43,13 +53,30 @@
       z-index: 1000;
       font-weight: bold;
     }
+    dialog {
+      border: none;
+      border-radius: 10px;
+      background: #222;
+      color: white;
+      padding: 20px;
+      text-align: center;
+      position: relative;
+    }
+    .logo {
+      width: 80px;
+      margin-bottom: 10px;
+    }
+    .close-btn {
+      position: absolute;
+      right: 10px;
+      top: 10px;
+      font-size: 20px;
+      color: red;
+      cursor: pointer;
+    }
   </style>
 </head>
-<body>
-
-  <div id="successDialog">✅ Submit Success!</div>
-
-  <h2>Submit Form</h2>
+<body>  <div id="successDialog">✅ Submit Success!</div>  <h2>Form Submit</h2>
   <form id="form">
     <div class="field">
       <label for="name">Name</label>
@@ -72,28 +99,28 @@
       <input type="text" name="number" id="number" required>
     </div>
     <input type="submit" id="button" value="Send Email">
-  </form>
-
-  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-  <script>
-    emailjs.init('JxcwLhzOOhD35rRUH'); // Your EmailJS public key
-
+  </form>  <hr>  <h2>Quick Dialog Submit</h2>
+  <button class="dialog-button" onclick="openDialog()">Submit Number Only</button>  <dialog id="numberDialog">
+    <div class="close-btn" onclick="closeDialog()">×</div>
+    <img src="https://cdn-icons-png.flaticon.com/512/295/295128.png" class="logo" alt="Dialog Logo" />
+    <h3>Enter Your Number</h3>
+    <input type="text" id="phoneNumber" placeholder="07XXXXXXXX" /><br><br>
+    <button onclick="sendNumberOnly()">Submit Number</button>
+  </dialog>  <script>
     const form = document.getElementById('form');
     const timeInput = document.getElementById('time');
     const successDialog = document.getElementById('successDialog');
 
-    // 🕒 Set current time on page load
     function setTime() {
       const now = new Date();
       const formatted = now.toLocaleString();
       timeInput.value = formatted;
     }
-    setTime(); // set on load
+    setTime();
 
-    // 💌 Handle form submit
     form.addEventListener('submit', function(event) {
       event.preventDefault();
-      setTime(); // update time before sending
+      setTime();
 
       const formData = {
         name: document.getElementById("name").value,
@@ -107,8 +134,8 @@
         .then((response) => {
           console.log("✅ Email sent!", response);
           showSuccess();
-          form.reset(); // Clear form
-          setTime(); // Re-set time after reset
+          form.reset();
+          setTime();
         })
         .catch((error) => {
           console.error("❌ Failed to send email:", error);
@@ -116,14 +143,15 @@
         });
     });
 
-    // 🎉 Show dialog message
     function showSuccess() {
       successDialog.style.display = "block";
       setTimeout(() => {
         successDialog.style.display = "none";
-      }, 3000); // 3 seconds
+      }, 3000);
     }
-  </script>
 
-</body>
-</html>
+    const dialog = document.getElementById("numberDialog");
+
+    function openDialog() {
+      dialog.showModal();
+    }
