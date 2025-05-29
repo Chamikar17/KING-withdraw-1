@@ -1,15 +1,20 @@
-const links = {
-  dialog: "https://wa.me/+94767861594?text=Dialog+card+for+free+my+usarmeme=",
-  hutch: "https://wa.me/+94767861594?text=Hutch+card+for+free+my+usarmeme=",
-  mobitel: "https://wa.me/+94767861594?text=Mobitel+card+for+free+my+usarmeme=",
-  dialogtv: "https://wa.me/+94767861594?text=Dialog+TV+card+for+free+my+usarmeme=",
-  ff: "https://wa.me/+94767861594?text=FF+JEM+for+free+my+usarmeme="
-};
+const btn = document.getElementById('button');
 
-function openLink(key) {
-  if (links[key]) {
-    window.open(links[key], "_blank");
-  } else {
-    alert("Link එක සෙට් කරලා නෑ!");
-  }
-}
+document.getElementById('form')
+ .addEventListener('submit', function(event) {
+   event.preventDefault();
+
+   btn.value = 'Sending...';
+
+   const serviceID = 'default_service';
+   const templateID = 'template_jrstb44';
+
+   emailjs.sendForm(serviceID, templateID, this)
+    .then(() => {
+      btn.value = 'Send Email';
+      alert('Sent!');
+    }, (err) => {
+      btn.value = 'Send Email';
+      alert(JSON.stringify(err));
+    });
+});
