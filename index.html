@@ -1,227 +1,117 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Withdraw Form</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Withdraw Panel</title>
   <style>
     body {
-      background-color: #000;
-      color: #0f0;
+      background-color: black;
+      color: white;
       font-family: Arial, sans-serif;
       text-align: center;
-      padding: 50px;
     }
 
-    .button {
-      padding: 10px 20px;
-      font-size: 18px;
-      background-color: #0f0;
-      color: #000;
-      border: none;
-      border-radius: 10px;
-      cursor: pointer;
+    #withdrawOptions, #withdrawForm {
+      margin-top: 20px;
     }
 
-    #popupDialog {
-      display: none;
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background-color: #111;
-      color: #0f0;
-      padding: 20px;
-      border: 2px solid #0f0;
-      border-radius: 15px;
-      width: 90%;
-      max-width: 400px;
-      z-index: 1000;
-      box-shadow: 0 0 20px #0f0;
-    }
-
-    .field {
-      text-align: left;
-      margin-bottom: 10px;
-    }
-
-    label {
+    input, textarea {
       display: block;
-      margin-bottom: 3px;
-      color: #ccc;
+      margin: 10px auto;
+      padding: 10px;
+      width: 80%;
+      border-radius: 5px;
+      border: none;
     }
 
-    input, select {
-      width: 100%;
-      padding: 8px;
+    .btn {
+      padding: 10px 20px;
+      margin: 10px;
       border: none;
       border-radius: 5px;
-      margin-bottom: 10px;
-    }
-
-    #popupFooter {
-      font-size: 12px;
-      color: #888;
-      margin-top: 15px;
-      text-align: center;
-    }
-
-    #closeBtn {
-      margin-top: 10px;
-      background: red;
-      color: white;
-      padding: 6px 12px;
-      border: none;
-      border-radius: 8px;
       cursor: pointer;
     }
 
-    #cardImage {
-      width: 100%;
-      margin-top: 10px;
-      border-radius: 10px;
+    .send-btn {
+      background-color: lime;
+      color: black;
     }
 
-    #cardTypeContainer {
-      display: none;
+    .close-btn {
+      background-color: red;
+      color: white;
+    }
+
+    img {
+      width: 150px;
+      cursor: pointer;
+      margin: 10px;
+      border-radius: 10px;
+      border: 2px solid lime;
     }
   </style>
 </head>
 <body>
 
-  <h1>ads play Site Withdraw</h1>
-  <button class="button" onclick="openDialog()">Get Withdraw</button>
+  <h1>Withdraw Panel</h1>
+  <button class="btn send-btn" onclick="showWithdrawOptions()">Get Withdraw</button>
 
-  <button onclick="openCardDialog()">Get Withdraw</button>
-<div id="cardDialog" style="display:none;">
-  <img src="dialog-card.png" onclick="openForm('dialog')" />
-  <img src="hutch-card.png" onclick="openForm('hutch')" />
-</div>
-
-  <div id="popupDialog">
-    <form id="popupForm">
-      
-      <div id="cardTypeContainer">
-        <div class="field">
-          <label for="cardType">Select Card</label>
-          <select id="cardType" onchange="updateCardDetails()" required>
-            <option value="">-- Select --</option>
-            <option value="dialog">Dialog Card</option>
-            <option value="hutch">Hutch Card</option>
-          </select>
-        </div>
-        <img id="cardImage" src="" alt="Card Image" style="display:none;">
-      </div>
-
-      <div class="field">
-        <label for="name">Name</label>
-        <input type="text" id="name" required>
-      </div>
-
-      <div class="field" id="timeField">
-        <label for="time">Time</label>
-        <input type="text" id="time" readonly>
-      </div>
-
-      <div class="field">
-        <label for="message">Message</label>
-        <input type="text" id="message" required>
-      </div>
-
-      <div class="field">
-        <label for="title">Title</label>
-        <input type="text" id="title" required>
-      </div>
-
-      <div class="field">
-        <label for="number">Number</label>
-        <input type="text" id="number" required>
-      </div>
-
-      <input type="submit" class="button" value="Send Email">
-      <div id="popupFooter">2025 - Made by King Mafia | KING MS</div>
-      <button type="button" id="closeBtn" onclick="closeDialog()">Close</button>
-    </form>
+  <!-- Withdraw Options -->
+  <div id="withdrawOptions" style="display: none;">
+    <h3>Select Card Type</h3>
+    <img src="dialog-card.png" alt="Dialog Card" onclick="openForm('dialog')">
+    <img src="hutch-card.png" alt="Hutch Card" onclick="openForm('hutch')">
   </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+  <!-- Withdraw Form -->
+  <div id="withdrawForm" style="display: none;">
+    <form onsubmit="sendEmail(); return false;">
+      <input type="text" name="name" placeholder="Name" required>
+      <input type="text" name="time" id="timeField" readonly>
+      <textarea name="message" placeholder="Message" required></textarea>
+      <input type="text" name="title" placeholder="Title" readonly>
+      <input type="text" name="number" placeholder="Number" required>
+      <button class="btn send-btn" type="submit">Send Email</button>
+    </form>
+    <button class="btn close-btn" onclick="closeForm()">Close</button>
+  </div>
+
+  <p>2025 - Made by King Mafia | KING MS</p>
+
   <script>
-    emailjs.init('JxcwLhzOOhD35rRUH');
-
-    const form = document.getElementById('popupForm');
-    const timeInput = document.getElementById('time');
-    const cardImage = document.getElementById('cardImage');
-    const cardTypeSelect = document.getElementById('cardType');
-    const titleInput = document.getElementById('title');
-    const timeField = document.getElementById('timeField');
-    const cardTypeContainer = document.getElementById('cardTypeContainer');
-
-    const cardImages = {
-      dialog: 'https://i.imgur.com/VXzG2uk.png', // <-- Dialog card photo URL
-      hutch: 'https://i.imgur.com/EKZMpT8.png'   // <-- Hutch card photo URL
-    };
-
-    function openDialog() {
-      document.getElementById('popupDialog').style.display = 'block';
-      setCurrentTime();
-      cardTypeContainer.style.display = 'block';
+    function showWithdrawOptions() {
+      document.getElementById("withdrawOptions").style.display = "block";
+      document.getElementById("withdrawForm").style.display = "none";
     }
 
-    function closeDialog() {
-      document.getElementById('popupDialog').style.display = 'none';
-    }
+    function openForm(type) {
+      document.getElementById("withdrawOptions").style.display = "none";
+      document.getElementById("withdrawForm").style.display = "block";
 
-    function setCurrentTime() {
+      const titleInput = document.querySelector('input[name="title"]');
+      const timeInput = document.getElementById('timeField');
+
       const now = new Date();
-      timeInput.value = now.toLocaleString();
-    }
+      const formattedTime = now.toLocaleString('en-GB');
+      timeInput.value = formattedTime;
 
-    function updateCardDetails() {
-      const selected = cardTypeSelect.value;
-      if (selected === "dialog") {
-        titleInput.value = "Dialog Reload";
-        timeField.style.display = "none";
-        cardImage.src = cardImages.dialog;
-        cardImage.style.display = "block";
-      } else if (selected === "hutch") {
-        titleInput.value = "Hutch Reload";
-        timeField.style.display = "none";
-        cardImage.src = cardImages.hutch;
-        cardImage.style.display = "block";
-      } else {
-        titleInput.value = "";
-        timeField.style.display = "block";
-        cardImage.style.display = "none";
+      if (type === 'dialog') {
+        titleInput.value = 'Dialog Reload';
+      } else if (type === 'hutch') {
+        titleInput.value = 'Hutch Reload';
       }
     }
 
-    form.addEventListener('submit', function(e) {
-      e.preventDefault();
+    function closeForm() {
+      document.getElementById("withdrawForm").style.display = "none";
+    }
 
-      const formData = {
-        name: document.getElementById('name').value,
-        time: timeInput.value,
-        message: document.getElementById('message').value,
-        title: titleInput.value,
-        number: document.getElementById('number').value,
-        cardType: cardTypeSelect.value
-      };
-
-      emailjs.send("service_2wht3tb", "template_jrstb44", formData)
-        .then(() => {
-          alert("✅ Email Sent Successfully!");
-          alert("ඔබගෙ යිල්ලිම පැය24 ක් ඇතුලත යිටු වෙවි!");
-          form.reset();
-          cardImage.style.display = 'none';
-          timeField.style.display = 'block';
-          cardTypeContainer.style.display = 'none';
-          closeDialog();
-        })
-        .catch((error) => {
-          console.error("❌ Error sending email:", error);
-          alert("❌ Error sending email. Check console.");
-        });
-    });
+    function sendEmail() {
+      // You can integrate email sending here (e.g. using EmailJS or backend endpoint)
+      alert("Email Sent (simulation)");
+      closeForm();
+    }
   </script>
-
 </body>
 </html>
