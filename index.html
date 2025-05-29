@@ -48,31 +48,84 @@
 <body>
 
 
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>PRABATH-MD</title>
-  <link rel="stylesheet" href="style.css"/>
+  <style>
+    body {
+      background-color: #000;
+      color: #0f0;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 50px;
+    }
+
+    #pairingCard {
+      display: none;
+      background-color: #111;
+      border: 2px solid #0f0;
+      border-radius: 15px;
+      padding: 20px;
+      margin-top: 30px;
+      width: 90%;
+      max-width: 400px;
+      margin-left: auto;
+      margin-right: auto;
+      box-shadow: 0 0 10px #0f0;
+    }
+
+    .button {
+      padding: 10px 20px;
+      font-size: 18px;
+      background-color: #0f0;
+      color: #000;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .button:hover {
+      background-color: #00cc00;
+    }
+
+    .code {
+      font-weight: bold;
+      font-size: 22px;
+      color: #33ff33;
+    }
+
+    footer {
+      margin-top: 50px;
+      font-size: 14px;
+      color: #888;
+    }
+  </style>
 </head>
 <body>
-  <div class="main">
-    <h1>PRABATH-MD</h1>
 
-    <!-- 👉 මෙතනින් පහල message එක ඔබම customize කරන්න -->
-    <div class="custom-message">
-      <p style="font-size: 20px; color: lime;">🔐 Pair your device by entering the code manually.</p>
-    </div>
+  <h1>PRABATH-MD</h1>
 
-    <!-- Pairing code form -->
-    <form id="pairForm">
-      <input type="text" id="codeInput" placeholder="Enter Your Pairing Code" required>
-      <button type="submit">Submit</button>
-    </form>
+  <button class="button" onclick="showPairing()">Submit</button>
+
+  <div id="pairingCard">
+    <h2>Your Pairing Code</h2>
+    <p>Code: <span class="code">1F1MEB48</span></p>
+    <p>To pair your device, open WhatsApp on your phone,<br>
+      go to <strong>Settings > Linked Devices > Link a Device</strong>,<br>
+      and enter this code.</p>
   </div>
 
   <footer>
     <p>2025 - 2025 Made By Prabath Kumara | PRABATH-MD</p>
   </footer>
 
+  <script>
+    function showPairing() {
+      document.getElementById('pairingCard').style.display = 'block';
+    }
+  
 
 
   
