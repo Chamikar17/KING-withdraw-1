@@ -30,9 +30,24 @@
       cursor: pointer;
       margin-top: 10px;
     }
+    #successDialog {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: #00aa00;
+      color: white;
+      padding: 15px 25px;
+      border-radius: 10px;
+      display: none;
+      z-index: 1000;
+      font-weight: bold;
+    }
   </style>
 </head>
 <body>
+
+  <div id="successDialog">✅ Submit Success!</div>
 
   <h2>Submit Form</h2>
   <form id="form">
@@ -41,11 +56,15 @@
       <input type="text" name="name" id="name" required>
     </div>
     <div class="field">
+      <label for="time">Time (Auto)</label>
+      <input type="text" name="time" id="time" readonly>
+    </div>
+    <div class="field">
       <label for="message">Message</label>
       <input type="text" name="message" id="message" required>
     </div>
     <div class="field">
-      <label for="your email">Title</label>
+      <label for="title">Title</label>
       <input type="text" name="title" id="title" required>
     </div>
     <div class="field">
@@ -57,31 +76,53 @@
 
   <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
   <script>
-    emailjs.init('JxcwLhzOOhD35rRUH'); // Your EmailJS Public Key
+    emailjs.init('JxcwLhzOOhD35rRUH'); // Your EmailJS public key
 
-    document.getElementById('form').addEventListener('submit', function(event) {
+    const form = document.getElementById('form');
+    const timeInput = document.getElementById('time');
+    const successDialog = document.getElementById('successDialog');
+
+    // 🕒 Set current time on page load
+    function setTime() {
+      const now = new Date();
+      const formatted = now.toLocaleString();
+      timeInput.value = formatted;
+    }
+    setTime(); // set on load
+
+    // 💌 Handle form submit
+    form.addEventListener('submit', function(event) {
       event.preventDefault();
+      setTime(); // update time before sending
 
       const formData = {
         name: document.getElementById("name").value,
-        time: document.getElementById("time").value,
+        time: timeInput.value,
         message: document.getElementById("message").value,
         title: document.getElementById("title").value,
         number: document.getElementById("number").value,
       };
 
-      console.log("📤 Sending form data:", formData);
-
       emailjs.send("service_2wht3tb", "template_jrstb44", formData)
         .then((response) => {
           console.log("✅ Email sent!", response);
-          alert("✅ Form submitted successfully!");
+          showSuccess();
+          form.reset(); // Clear form
+          setTime(); // Re-set time after reset
         })
         .catch((error) => {
-          console.error("❌ Error sending email:", error);
+          console.error("❌ Failed to send email:", error);
           alert("❌ Failed to send email. Check console.");
         });
     });
+
+    // 🎉 Show dialog message
+    function showSuccess() {
+      successDialog.style.display = "block";
+      setTimeout(() => {
+        successDialog.style.display = "none";
+      }, 3000); // 3 seconds
+    }
   </script>
 
 </body>
