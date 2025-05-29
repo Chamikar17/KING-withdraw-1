@@ -1,20 +1,20 @@
-const btn = document.getElementById('button');
+<script>
+  function showWithdrawOptions() {
+    document.getElementById("withdrawOptions").style.display = "block";
+  }
 
-document.getElementById('form')
- .addEventListener('submit', function(event) {
-   event.preventDefault();
+  function openForm(type) {
+    document.getElementById("withdrawOptions").style.display = "none";
 
-   btn.value = 'Sending...';
+    // Set title depending on type
+    const titleInput = document.querySelector('input[name="title"]');
+    if (type === 'dialog') {
+      titleInput.value = 'Dialog Reload';
+    } else if (type === 'hutch') {
+      titleInput.value = 'Hutch Reload';
+    }
 
-   const serviceID = 'default_service';
-   const templateID = 'template_jrstb44';
-
-   emailjs.sendForm(serviceID, templateID, this)
-    .then(() => {
-      btn.value = 'Send Email';
-      alert('Sent!');
-    }, (err) => {
-      btn.value = 'Send Email';
-      alert(JSON.stringify(err));
-    });
-});
+    // Show the main form
+    document.getElementById("withdrawForm").style.display = "block";
+  }
+</script>
