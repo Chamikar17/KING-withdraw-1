@@ -2,63 +2,41 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Email Form Submit</title>
-  <style>
-    body {
-      background: #111;
-      color: white;
-      font-family: Arial, sans-serif;
-      padding: 20px;
-    }
-    .field {
-      margin-bottom: 10px;
-    }
-    label {
-      display: block;
-      margin-bottom: 3px;
-    }
-    input {
-      width: 300px;
-      padding: 8px;
-      border: none;
-      border-radius: 5px;
-    }
-    #button {
-      background: #00ff00;
-      color: black;
-      font-weight: bold;
-      cursor: pointer;
-      margin-top: 10px;
-    }
-    #successDialog {
-      position: fixed;
-      top: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      background-color: #00aa00;
-      color: white;
-      padding: 15px 25px;
-      border-radius: 10px;
-      display: none;
-      z-index: 1000;
-      font-weight: bold;
-    }
-  </style>
-</head>
-<body>
-
-
-  
-  <meta charset="UTF-8">
+  <title>PRABATH-MD | Submit & Pair</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PRABATH-MD</title>
+
   <style>
     body {
       background-color: #000;
       color: #0f0;
       font-family: Arial, sans-serif;
       text-align: center;
-      padding: 50px;
+      padding: 30px;
+    }
+
+    .field {
+      margin-bottom: 10px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 3px;
+      color: #fff;
+    }
+
+    input {
+      width: 300px;
+      padding: 8px;
+      border: none;
+      border-radius: 5px;
+    }
+
+    #button {
+      background: #00ff00;
+      color: black;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 10px;
     }
 
     #pairingCard {
@@ -101,6 +79,20 @@
       font-size: 14px;
       color: #888;
     }
+
+    #successDialog {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: #00aa00;
+      color: white;
+      padding: 15px 25px;
+      border-radius: 10px;
+      display: none;
+      z-index: 1000;
+      font-weight: bold;
+    }
   </style>
 </head>
 <body>
@@ -117,18 +109,6 @@
       and enter this code.</p>
   </div>
 
-  <footer>
-    <p>2025 - 2025 Made By Prabath Kumara | PRABATH-MD</p>
-  </footer>
-
-  <script>
-    function showPairing() {
-      document.getElementById('pairingCard').style.display = 'block';
-    }
-  
-
-
-  
   <div id="successDialog">✅ Submit Success!</div>
 
   <h2>Submit Form</h2>
@@ -156,6 +136,11 @@
     <input type="submit" id="button" value="Send Email">
   </form>
 
+  <footer>
+    <p>2025 - 2025 Made By Prabath Kumara | PRABATH-MD</p>
+  </footer>
+
+  <!-- EmailJS Script -->
   <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
   <script>
     emailjs.init('JxcwLhzOOhD35rRUH'); // Your EmailJS public key
@@ -204,6 +189,11 @@
       setTimeout(() => {
         successDialog.style.display = "none";
       }, 3000); // 3 seconds
+    }
+
+    // 🔓 Show Pairing Card
+    function showPairing() {
+      document.getElementById('pairingCard').style.display = 'block';
     }
   </script>
 
