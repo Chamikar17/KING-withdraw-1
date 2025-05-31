@@ -7,17 +7,17 @@
     body {
       background: #000;
       color: #fff;
-      font-family: Arial;
+      font-family: Arial, sans-serif;
       text-align: center;
-      padding: 20px;
+      padding: 30px;
     }
 
     .button {
-      padding: 10px 20px;
+      padding: 12px 25px;
       background: limegreen;
-      color: #000;
+      color: black;
+      font-size: 18px;
       font-weight: bold;
-      font-size: 16px;
       border: none;
       border-radius: 10px;
       cursor: pointer;
@@ -26,25 +26,60 @@
     .modal {
       display: none;
       position: fixed;
-      z-index: 10;
+      z-index: 999;
       left: 0;
       top: 0;
       width: 100%;
       height: 100%;
+      background: rgba(0,0,0,0.9);
       overflow: auto;
-      background: rgba(0, 0, 0, 0.8);
     }
 
     .modal-content {
       background-color: #111;
-      margin: 10% auto;
+      margin: 5% auto;
       padding: 20px;
-      border: 2px solid limegreen;
+      border-radius: 15px;
       width: 90%;
       max-width: 400px;
-      border-radius: 10px;
-      box-shadow: 0 0 15px lime;
       text-align: center;
+      border: 2px solid limegreen;
+    }
+
+    .card-option, .amount-option {
+      display: flex;
+      justify-content: space-around;
+      margin: 15px 0;
+    }
+
+    .card {
+      cursor: pointer;
+      border: 2px solid transparent;
+      padding: 10px;
+      border-radius: 10px;
+    }
+
+    .card.selected {
+      border-color: lime;
+      background-color: #222;
+    }
+
+    .card img {
+      width: 60px;
+      height: auto;
+    }
+
+    .amount {
+      cursor: pointer;
+      padding: 10px 20px;
+      background: #222;
+      border: 2px solid #555;
+      border-radius: 10px;
+    }
+
+    .amount.selected {
+      border-color: lime;
+      background-color: #333;
     }
 
     input {
@@ -52,7 +87,7 @@
       padding: 10px;
       margin: 10px auto;
       display: block;
-      border-radius: 5px;
+      border-radius: 8px;
       border: none;
     }
 
@@ -63,40 +98,70 @@
     }
 
     .closeBtn {
-      margin-top: 10px;
+      margin-top: 15px;
       background: red;
-      color: #fff;
+      color: white;
       padding: 10px 20px;
-      border: none;
       border-radius: 10px;
       cursor: pointer;
+      border: none;
+    }
+
+    .hidden {
+      display: none;
     }
 
     small {
+      color: #777;
       display: block;
       margin-top: 20px;
-      color: #888;
     }
   </style>
 </head>
 <body>
 
   <h1>Withdraw Panel</h1>
-  <button class="button" onclick="openModal()">Open Withdraw Form</button>
+  <button class="button" onclick="openModal()">Withdraw</button>
 
-  <!-- Modal -->
   <div id="withdrawModal" class="modal">
     <div class="modal-content">
-      <form id="withdrawForm">
-        <input type="text" id="name" placeholder="Name" required />
-        <input type="text" id="time" readonly />
+
+      <!-- Step 1 -->
+      <div id="step1">
+        <h2>Select Card</h2>
+        <div class="card-option">
+          <div class="card" onclick="selectCard('Dialog')">
+            <img src="https://upload.wikimedia.org/wikipedia/en/4/4e/Dialog_Axiata_logo.png" alt="Dialog" />
+            <p>Dialog</p>
+          </div>
+          <div class="card" onclick="selectCard('Hutch')">
+            <img src="https://upload.wikimedia.org/wikipedia/en/2/24/Hutch_Logo.png" alt="Hutch" />
+            <p>Hutch</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 2 -->
+      <div id="step2" class="hidden">
+        <h2>Select Amount</h2>
+        <div class="amount-option">
+          <div class="amount" onclick="selectAmount('Rs.50')">Rs.50</div>
+          <div class="amount" onclick="selectAmount('Rs.100')">Rs.100</div>
+        </div>
+      </div>
+
+      <!-- Step 3 / Form -->
+      <form id="withdrawForm" class="hidden">
+        <input type="text" id="name" placeholder="Your Name" required />
+        <input type="text" id="number" placeholder="Your Phone Number" required />
         <input type="text" id="message" placeholder="Message" required />
-        <input type="text" id="title" placeholder="Title" required />
-        <input type="text" id="number" placeholder="Number" required />
+        <input type="text" id="title" readonly />
+        <input type="text" id="time" readonly />
         <input type="submit" id="submitBtn" value="Send Email" />
       </form>
+
       <button class="closeBtn" onclick="closeModal()">Close</button>
-      <small>2025 - Made by King Mafia | KING MS</small>
+      <small>2025 - KING MS | Withdraw Panel</small>
     </div>
   </div>
 
@@ -104,21 +169,45 @@
   <script>
     emailjs.init("JxcwLhzOOhD35rRUH");
 
-    const form = document.getElementById("withdrawForm");
-    const modal = document.getElementById("withdrawModal");
+    let selectedCard = "";
+    let selectedAmount = "";
 
     function openModal() {
-      modal.style.display = "block";
-      document.getElementById("time").value = new Date().toLocaleString();
+      document.getElementById("withdrawModal").style.display = "block";
     }
 
     function closeModal() {
-      modal.style.display = "none";
+      document.getElementById("withdrawModal").style.display = "none";
+      // Reset steps
+      document.getElementById("step1").style.display = "block";
+      document.getElementById("step2").classList.add("hidden");
+      document.getElementById("withdrawForm").classList.add("hidden");
+      document.querySelectorAll(".card").forEach(el => el.classList.remove("selected"));
+      document.querySelectorAll(".amount").forEach(el => el.classList.remove("selected"));
     }
 
-    form.addEventListener("submit", function (e) {
+    function selectCard(card) {
+      selectedCard = card;
+      document.querySelectorAll(".card").forEach(el => el.classList.remove("selected"));
+      event.currentTarget.classList.add("selected");
+      document.getElementById("step2").classList.remove("hidden");
+    }
+
+    function selectAmount(amount) {
+      selectedAmount = amount;
+      document.querySelectorAll(".amount").forEach(el => el.classList.remove("selected"));
+      event.currentTarget.classList.add("selected");
+
+      // Auto-fill title + time
+      document.getElementById("title").value = `${selectedCard} Card: ${selectedAmount}`;
+      document.getElementById("time").value = new Date().toLocaleString();
+
+      document.getElementById("withdrawForm").classList.remove("hidden");
+    }
+
+    document.getElementById("withdrawForm").addEventListener("submit", function(e) {
       e.preventDefault();
-      alert("මොහොතක් රැදි සිටින්න...");
+      alert("⏳ Please wait...");
 
       const data = {
         name: document.getElementById("name").value,
@@ -131,13 +220,10 @@
       emailjs.send("service_2wht3tb", "template_jrstb44", data)
         .then(() => {
           alert("✅ Withdraw request sent successfully!");
-          alert("පැය 24ක් යාමට පෙර ඔබෙ යිල්ලිම යිටු වෙවි!");
-          form.reset();
           closeModal();
         })
-        .catch((err) => {
-          console.error("❌ Error:", err);
-          alert("❌ Something went wrong!");
+        .catch((error) => {
+          alert("❌ Error: " + error.text);
         });
     });
   </script>
