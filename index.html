@@ -1,5 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="en">
 <head>
   <meta charset="UTF-8" />
   <title>Withdraw Panel</title>
@@ -10,169 +9,156 @@
       font-family: Arial, sans-serif;
       text-align: center;
       padding: 30px;
-    }
+    }.button {
+  padding: 12px 25px;
+  background: limegreen;
+  color: black;
+  font-size: 18px;
+  font-weight: bold;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+}
 
-    .button {
-      padding: 12px 25px;
-      background: limegreen;
-      color: black;
-      font-size: 18px;
-      font-weight: bold;
-      border: none;
-      border-radius: 10px;
-      cursor: pointer;
-    }
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 999;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.9);
+  overflow: auto;
+}
 
-    .modal {
-      display: none;
-      position: fixed;
-      z-index: 999;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0,0,0,0.9);
-      overflow: auto;
-    }
+.modal-content {
+  background-color: #111;
+  margin: 5% auto;
+  padding: 20px;
+  border-radius: 15px;
+  width: 90%;
+  max-width: 400px;
+  text-align: center;
+  border: 2px solid limegreen;
+}
 
-    .modal-content {
-      background-color: #111;
-      margin: 5% auto;
-      padding: 20px;
-      border-radius: 15px;
-      width: 90%;
-      max-width: 400px;
-      text-align: center;
-      border: 2px solid limegreen;
-    }
+.service-option, .amount-option {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  margin: 15px 0;
+}
 
-    .card-option, .amount-option {
-      display: flex;
-      justify-content: space-around;
-      margin: 15px 0;
-    }
+.card {
+  cursor: pointer;
+  border: 2px solid transparent;
+  padding: 10px;
+  border-radius: 10px;
+}
 
-    .card {
-      cursor: pointer;
-      border: 2px solid transparent;
-      padding: 10px;
-      border-radius: 10px;
-    }
+.card.selected, .amount.selected {
+  border-color: lime;
+  background-color: #222;
+}
 
-    .card.selected {
-      border-color: lime;
-      background-color: #222;
-    }
+.card img, .amount img {
+  width: 60px;
+  height: 60px;
+}
 
-    .card img {
-      width: 60px;
-      height: auto;
-    }
+.amount {
+  cursor: pointer;
+  padding: 10px;
+  margin: 10px;
+  background: #222;
+  border: 2px solid #555;
+  border-radius: 10px;
+  width: 100px;
+}
 
-    .amount {
-      cursor: pointer;
-      padding: 10px 20px;
-      background: #222;
-      border: 2px solid #555;
-      border-radius: 10px;
-    }
+input {
+  width: 90%;
+  padding: 10px;
+  margin: 10px auto;
+  display: block;
+  border-radius: 8px;
+  border: none;
+}
 
-    .amount.selected {
-      border-color: lime;
-      background-color: #333;
-    }
+#submitBtn {
+  background: limegreen;
+  color: black;
+  font-weight: bold;
+}
 
-    input {
-      width: 90%;
-      padding: 10px;
-      margin: 10px auto;
-      display: block;
-      border-radius: 8px;
-      border: none;
-    }
+.closeBtn {
+  margin-top: 15px;
+  background: red;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 10px;
+  cursor: pointer;
+  border: none;
+}
 
-    #submitBtn {
-      background: limegreen;
-      color: black;
-      font-weight: bold;
-    }
+.hidden { display: none; }
+small { color: #777; display: block; margin-top: 20px; }
 
-    .closeBtn {
-      margin-top: 15px;
-      background: red;
-      color: white;
-      padding: 10px 20px;
-      border-radius: 10px;
-      cursor: pointer;
-      border: none;
-    }
-
-    .hidden {
-      display: none;
-    }
-
-    small {
-      color: #777;
-      display: block;
-      margin-top: 20px;
-    }
   </style>
 </head>
 <body>
-
   <h1>Withdraw Panel</h1>
-  <button class="button" onclick="openModal()">Withdraw</button>
-
-  <div id="withdrawModal" class="modal">
+  <button class="button" onclick="openModal()">Withdraw</button>  <div id="withdrawModal" class="modal">
     <div class="modal-content">
-
-      <!-- Step 1 -->
-      <div id="step1">
-        <h2>Select Card</h2>
-        <div class="card-option">
-          <div class="card" onclick="selectCard('Dialog')">
-            <img src="https://upload.wikimedia.org/wikipedia/en/4/4e/Dialog_Axiata_logo.png" alt="Dialog" />
-            <p>Dialog</p>
+      <div id="serviceStep">
+        <h2>Select Service</h2>
+        <div class="service-option">
+          <div class="card" onclick="selectService('FreeFire')">
+            <img src="https://cdn-icons-png.flaticon.com/512/833/833472.png" alt="FF">
+            <p>Free Fire</p>
           </div>
-          <div class="card" onclick="selectCard('Hutch')">
-            <img src="https://upload.wikimedia.org/wikipedia/en/2/24/Hutch_Logo.png" alt="Hutch" />
-            <p>Hutch</p>
+          <div class="card" onclick="selectService('TV')">
+            <img src="https://cdn-icons-png.flaticon.com/512/2784/2784468.png" alt="TV">
+            <p>TV Reload</p>
           </div>
         </div>
-      </div>   
-    
-
-      <!-- Step 2 -->
-      <div id="step2" class="hidden">
-        <h2>Select Amount</h2>
-        <div class="amount-option">
-          <div class="amount" onclick="selectAmount('Rs.50')">Rs.50</div>
-          <div class="amount" onclick="selectAmount('Rs.100')">Rs.100</div>
-          <div class="amount" onclick="selectAmount('Rs.150')">Rs.150</div>
-        </div>
-      </div>
-
-      <!-- Step 3 / Form -->
-      <form id="withdrawForm" class="hidden">
-        <input type="text" id="name" placeholder="Your Name" required />
-        <input type="text" id="nomber" placeholder="Your Phone Number" required />
-        <input type="text" id="message" placeholder="Message" required />
-        <input type="text" id="title" readonly />
-        <input type="text" id="time" readonly />
-        <input type="submit" id="submitBtn" value="Send Email" />
-      </form>
-
-      <button class="closeBtn" onclick="closeModal()">Close</button>
-      <small>2025 - KING MS | Withdraw Panel</small>
-    </div>
+      </div><div id="amountStep" class="hidden">
+    <h2>Select Option</h2>
+    <div class="amount-option" id="amountOptions"></div>
   </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-  <script>
+  <form id="withdrawForm" class="hidden">
+    <input type="text" id="name" placeholder="Your Name" required />
+    <input type="text" id="identifier" placeholder="" required />
+    <input type="text" id="message" placeholder="Message" required />
+    <input type="text" id="title" readonly />
+    <input type="text" id="time" readonly />
+    <input type="submit" id="submitBtn" value="Send Email" />
+  </form>
+
+  <button class="closeBtn" onclick="closeModal()">Close</button>
+  <small>2025 - KING MS | Withdraw Panel</small>
+</div>
+
+  </div>  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>  <script>
     emailjs.init("JxcwLhzOOhD35rRUH");
 
-    let selectedCard = "";
+    let selectedService = "";
     let selectedAmount = "";
+
+    const amountData = {
+      FreeFire: [
+        { name: "Weekly Lite", img: "https://cdn-icons-png.flaticon.com/512/888/888879.png" },
+        { name: "Weekly", img: "https://cdn-icons-png.flaticon.com/512/888/888879.png" },
+        { name: "Monthly", img: "https://cdn-icons-png.flaticon.com/512/888/888879.png" },
+        { name: "Gem 100", img: "https://cdn-icons-png.flaticon.com/512/2910/2910791.png" }
+      ],
+      TV: [
+        { name: "Rs.100", img: "https://cdn-icons-png.flaticon.com/512/888/888879.png" },
+        { name: "Rs.150", img: "https://cdn-icons-png.flaticon.com/512/888/888879.png" }
+      ]
+    };
 
     function openModal() {
       document.getElementById("withdrawModal").style.display = "block";
@@ -180,31 +166,39 @@
 
     function closeModal() {
       document.getElementById("withdrawModal").style.display = "none";
-      // Reset steps
-      document.getElementById("step1").style.display = "block";
-      document.getElementById("step2").classList.add("hidden");
+      document.getElementById("serviceStep").classList.remove("hidden");
+      document.getElementById("amountStep").classList.add("hidden");
       document.getElementById("withdrawForm").classList.add("hidden");
-      document.querySelectorAll(".card").forEach(el => el.classList.remove("selected"));
-      document.querySelectorAll(".amount").forEach(el => el.classList.remove("selected"));
+      document.getElementById("amountOptions").innerHTML = "";
+      document.querySelectorAll(".card").forEach(c => c.classList.remove("selected"));
     }
 
-    function selectCard(card) {
-      selectedCard = card;
-      document.querySelectorAll(".card").forEach(el => el.classList.remove("selected"));
+    function selectService(service) {
+      selectedService = service;
+      document.querySelectorAll(".card").forEach(c => c.classList.remove("selected"));
       event.currentTarget.classList.add("selected");
-      document.getElementById("step2").classList.remove("hidden");
+      document.getElementById("serviceStep").classList.add("hidden");
+      document.getElementById("amountStep").classList.remove("hidden");
+
+      const container = document.getElementById("amountOptions");
+      amountData[service].forEach(opt => {
+        const div = document.createElement("div");
+        div.className = "amount";
+        div.innerHTML = `<img src="${opt.img}"/><br>${opt.name}`;
+        div.onclick = () => selectAmount(opt.name, div);
+        container.appendChild(div);
+      });
     }
 
-    function selectAmount(amount) {
+    function selectAmount(amount, el) {
       selectedAmount = amount;
-      document.querySelectorAll(".amount").forEach(el => el.classList.remove("selected"));
-      event.currentTarget.classList.add("selected");
-
-      // Auto-fill title + time
-      document.getElementById("title").value = `${selectedCard} Card: ${selectedAmount}`;
-      document.getElementById("time").value = new Date().toLocaleString();
+      document.querySelectorAll(".amount").forEach(a => a.classList.remove("selected"));
+      el.classList.add("selected");
 
       document.getElementById("withdrawForm").classList.remove("hidden");
+      document.getElementById("title").value = `${selectedService}: ${selectedAmount}`;
+      document.getElementById("time").value = new Date().toLocaleString();
+      document.getElementById("identifier").placeholder = selectedService === 'FreeFire' ? "UID (FF)" : "DVD Number";
     }
 
     document.getElementById("withdrawForm").addEventListener("submit", function(e) {
@@ -213,7 +207,7 @@
 
       const data = {
         name: document.getElementById("name").value,
-        number: document.getElementById("nomber").value,
+        number: document.getElementById("identifier").value,
         message: document.getElementById("message").value,
         time: document.getElementById("time").value,
         title: document.getElementById("title").value,
@@ -228,6 +222,5 @@
           alert("❌ Error: " + error.text);
         });
     });
-  </script>
-</body>
+  </script></body>
 </html>
