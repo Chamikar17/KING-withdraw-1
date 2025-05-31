@@ -43,11 +43,11 @@
   border: 2px solid limegreen;
 }
 
-.service-option, .amount-option {
+.card-option, .amount-option {
   display: flex;
   justify-content: space-around;
-  flex-wrap: wrap;
   margin: 15px 0;
+  flex-wrap: wrap;
 }
 
 .card {
@@ -55,26 +55,32 @@
   border: 2px solid transparent;
   padding: 10px;
   border-radius: 10px;
+  margin: 10px;
+  width: 100px;
 }
 
-.card.selected, .amount.selected {
+.card.selected {
   border-color: lime;
   background-color: #222;
 }
 
-.card img, .amount img {
+.card img {
   width: 60px;
-  height: 60px;
+  height: auto;
 }
 
 .amount {
   cursor: pointer;
-  padding: 10px;
-  margin: 10px;
+  padding: 10px 20px;
   background: #222;
   border: 2px solid #555;
   border-radius: 10px;
-  width: 100px;
+  margin: 5px;
+}
+
+.amount.selected {
+  border-color: lime;
+  background-color: #333;
 }
 
 input {
@@ -102,8 +108,15 @@ input {
   border: none;
 }
 
-.hidden { display: none; }
-small { color: #777; display: block; margin-top: 20px; }
+.hidden {
+  display: none;
+}
+
+small {
+  color: #777;
+  display: block;
+  margin-top: 20px;
+}
 
   </style>
 </head>
@@ -111,26 +124,38 @@ small { color: #777; display: block; margin-top: 20px; }
   <h1>Withdraw Panel</h1>
   <button class="button" onclick="openModal()">Withdraw</button>  <div id="withdrawModal" class="modal">
     <div class="modal-content">
-      <div id="serviceStep">
-        <h2>Select Service</h2>
-        <div class="service-option">
-          <div class="card" onclick="selectService('FreeFire')">
-            <img src="https://cdn-icons-png.flaticon.com/512/833/833472.png" alt="FF">
+      <div id="step1">
+        <h2>Select Option</h2>
+        <div class="card-option">
+          <div class="card" onclick="selectCard('Dialog')">
+            <img src="https://upload.wikimedia.org/wikipedia/en/4/4e/Dialog_Axiata_logo.png" alt="Dialog" />
+            <p>Dialog</p>
+          </div>
+          <div class="card" onclick="selectCard('Hutch')">
+            <img src="https://upload.wikimedia.org/wikipedia/en/2/24/Hutch_Logo.png" alt="Hutch" />
+            <p>Hutch</p>
+          </div>
+          <div class="card" onclick="selectCard('Mobitel')">
+            <img src="https://upload.wikimedia.org/wikipedia/en/f/fb/Sri_Lanka_Telecom_Mobitel_logo.png" alt="Mobitel" />
+            <p>Mobitel</p>
+          </div>
+          <div class="card" onclick="selectCard('FreeFire')">
+            <img src="https://seeklogo.com/images/F/free-fire-logo-265C8326DB-seeklogo.com.png" alt="FF" />
             <p>Free Fire</p>
           </div>
-          <div class="card" onclick="selectService('TV')">
-            <img src="https://cdn-icons-png.flaticon.com/512/2784/2784468.png" alt="TV">
+          <div class="card" onclick="selectCard('TV')">
+            <img src="https://cdn-icons-png.flaticon.com/512/535/535239.png" alt="TV" />
             <p>TV Reload</p>
           </div>
         </div>
-      </div><div id="amountStep" class="hidden">
-    <h2>Select Option</h2>
+      </div><div id="step2" class="hidden">
+    <h2>Select Amount</h2>
     <div class="amount-option" id="amountOptions"></div>
   </div>
 
   <form id="withdrawForm" class="hidden">
     <input type="text" id="name" placeholder="Your Name" required />
-    <input type="text" id="identifier" placeholder="" required />
+    <input type="text" id="nomber" placeholder="Your Phone Number" required />
     <input type="text" id="message" placeholder="Message" required />
     <input type="text" id="title" readonly />
     <input type="text" id="time" readonly />
@@ -143,22 +168,8 @@ small { color: #777; display: block; margin-top: 20px; }
 
   </div>  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>  <script>
     emailjs.init("JxcwLhzOOhD35rRUH");
-
-    let selectedService = "";
+    let selectedCard = "";
     let selectedAmount = "";
-
-    const amountData = {
-      FreeFire: [
-        { name: "Weekly Lite", img: "https://cdn-icons-png.flaticon.com/512/888/888879.png" },
-        { name: "Weekly", img: "https://cdn-icons-png.flaticon.com/512/888/888879.png" },
-        { name: "Monthly", img: "https://cdn-icons-png.flaticon.com/512/888/888879.png" },
-        { name: "Gem 100", img: "https://cdn-icons-png.flaticon.com/512/2910/2910791.png" }
-      ],
-      TV: [
-        { name: "Rs.100", img: "https://cdn-icons-png.flaticon.com/512/888/888879.png" },
-        { name: "Rs.150", img: "https://cdn-icons-png.flaticon.com/512/888/888879.png" }
-      ]
-    };
 
     function openModal() {
       document.getElementById("withdrawModal").style.display = "block";
@@ -166,39 +177,49 @@ small { color: #777; display: block; margin-top: 20px; }
 
     function closeModal() {
       document.getElementById("withdrawModal").style.display = "none";
-      document.getElementById("serviceStep").classList.remove("hidden");
-      document.getElementById("amountStep").classList.add("hidden");
+      document.getElementById("step1").style.display = "block";
+      document.getElementById("step2").classList.add("hidden");
       document.getElementById("withdrawForm").classList.add("hidden");
-      document.getElementById("amountOptions").innerHTML = "";
-      document.querySelectorAll(".card").forEach(c => c.classList.remove("selected"));
+      document.querySelectorAll(".card").forEach(el => el.classList.remove("selected"));
+      document.querySelectorAll(".amount").forEach(el => el.classList.remove("selected"));
     }
 
-    function selectService(service) {
-      selectedService = service;
-      document.querySelectorAll(".card").forEach(c => c.classList.remove("selected"));
+    function selectCard(card) {
+      selectedCard = card;
+      document.querySelectorAll(".card").forEach(el => el.classList.remove("selected"));
       event.currentTarget.classList.add("selected");
-      document.getElementById("serviceStep").classList.add("hidden");
-      document.getElementById("amountStep").classList.remove("hidden");
+      document.getElementById("step2").classList.remove("hidden");
+      document.getElementById("withdrawForm").classList.add("hidden");
+      document.getElementById("amountOptions").innerHTML = "";
 
-      const container = document.getElementById("amountOptions");
-      amountData[service].forEach(opt => {
+      let amounts = [];
+      if (card === "FreeFire") {
+        amounts = ["Weekly Lite", "Weekly", "Monthly", "Gem 100"];
+        document.getElementById("nomber").placeholder = "Your UID";
+      } else if (card === "TV") {
+        amounts = ["Rs.100", "Rs.150"];
+        document.getElementById("nomber").placeholder = "DVD Number";
+      } else {
+        amounts = ["Rs.50", "Rs.100", "Rs.150"];
+        document.getElementById("nomber").placeholder = "Your Phone Number";
+      }
+
+      amounts.forEach(amount => {
         const div = document.createElement("div");
         div.className = "amount";
-        div.innerHTML = `<img src="${opt.img}"/><br>${opt.name}`;
-        div.onclick = () => selectAmount(opt.name, div);
-        container.appendChild(div);
+        div.innerText = amount;
+        div.onclick = () => selectAmount(amount);
+        document.getElementById("amountOptions").appendChild(div);
       });
     }
 
-    function selectAmount(amount, el) {
+    function selectAmount(amount) {
       selectedAmount = amount;
-      document.querySelectorAll(".amount").forEach(a => a.classList.remove("selected"));
-      el.classList.add("selected");
-
-      document.getElementById("withdrawForm").classList.remove("hidden");
-      document.getElementById("title").value = `${selectedService}: ${selectedAmount}`;
+      document.querySelectorAll(".amount").forEach(el => el.classList.remove("selected"));
+      event.currentTarget.classList.add("selected");
+      document.getElementById("title").value = `${selectedCard} : ${selectedAmount}`;
       document.getElementById("time").value = new Date().toLocaleString();
-      document.getElementById("identifier").placeholder = selectedService === 'FreeFire' ? "UID (FF)" : "DVD Number";
+      document.getElementById("withdrawForm").classList.remove("hidden");
     }
 
     document.getElementById("withdrawForm").addEventListener("submit", function(e) {
@@ -207,7 +228,7 @@ small { color: #777; display: block; margin-top: 20px; }
 
       const data = {
         name: document.getElementById("name").value,
-        number: document.getElementById("identifier").value,
+        number: document.getElementById("nomber").value,
         message: document.getElementById("message").value,
         time: document.getElementById("time").value,
         title: document.getElementById("title").value,
