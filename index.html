@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Withdraw Panel</title>
   <style>
     body {
@@ -10,11 +10,6 @@
       font-family: Arial;
       text-align: center;
       padding: 20px;
-    }
-
-    h1 {
-      font-size: 28px;
-      margin-bottom: 20px;
     }
 
     .button {
@@ -28,34 +23,28 @@
       cursor: pointer;
     }
 
-    .card-buttons {
-      margin-top: 20px;
-    }
-
-    .card-button {
-      border: 2px solid limegreen;
-      background: #000;
-      color: limegreen;
-      padding: 10px 20px;
-      border-radius: 10px;
-      margin: 5px;
-      cursor: pointer;
-    }
-
-    .card-button img {
-      width: 24px;
-      height: 24px;
-      vertical-align: middle;
-      margin-right: 5px;
-    }
-
-    #formContainer {
+    .modal {
       display: none;
-      margin-top: 30px;
-      padding: 20px;
-      border: 2px solid #0f0;
-      border-radius: 10px;
+      position: fixed;
+      z-index: 10;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background: rgba(0, 0, 0, 0.8);
+    }
+
+    .modal-content {
       background-color: #111;
+      margin: 10% auto;
+      padding: 20px;
+      border: 2px solid limegreen;
+      width: 90%;
+      max-width: 400px;
+      border-radius: 10px;
+      box-shadow: 0 0 15px lime;
+      text-align: center;
     }
 
     input {
@@ -67,16 +56,20 @@
       border: none;
     }
 
-    #cardImage {
-      width: 100px;
-      border-radius: 10px;
-      margin: 10px auto;
-    }
-
     #submitBtn {
       background: limegreen;
-      color: #000;
+      color: black;
       font-weight: bold;
+    }
+
+    .closeBtn {
+      margin-top: 10px;
+      background: red;
+      color: #fff;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
     }
 
     small {
@@ -89,37 +82,22 @@
 <body>
 
   <h1>Withdraw Panel</h1>
-  <button class="button" onclick="showCardOptions()">Get Withdraw</button>
+  <button class="button" onclick="openModal()">Open Withdraw Form</button>
 
-  <div class="card-buttons" id="cardOptions" style="display:none;">
-    <button class="card-button" onclick="selectCard('Dialog')">
-      <img src="https://i.imgur.com/VXzG2uk.png"> Dialog Card
-    </button>
-    <button class="card-button" onclick="selectCard('Hutch')">
-      <img src="https://i.imgur.com/VXzG2uk.png"> Hutch Card
-    </button>
-    <button class="card-button" onclick="selectCard('Mobitel')">
-      <img src="https://i.imgur.com/VXzG2uk.png"> Mobitel Card
-    </button>
-    <button class="card-button" onclick="selectCard('FF')">
-      <img src="https://i.imgur.com/VXzG2uk.png"> FF ID Top-up
-    </button>
-    <button class="card-button" onclick="selectCard('TV')">
-      <img src="https://i.imgur.com/VXzG2uk.png"> Dialog TV Reload
-    </button>
-  </div>
-
-  <div id="formContainer">
-    <h2 id="formTitle"></h2>
-    <img id="cardImage" src="" alt="Card Image">
-    <form id="withdrawForm">
-      <input type="text" id="name" placeholder="Your Name" required>
-      <input type="text" id="number" placeholder="" required>
-      <input type="text" id="message" placeholder="Message" required>
-      <input type="text" id="time" readonly>
-      <input type="submit" id="submitBtn" value="Submit">
-    </form>
-    <small>2025 - Made by King Mafia | KING MS</small>
+  <!-- Modal -->
+  <div id="withdrawModal" class="modal">
+    <div class="modal-content">
+      <form id="withdrawForm">
+        <input type="text" id="name" placeholder="Name" required />
+        <input type="text" id="time" readonly />
+        <input type="text" id="message" placeholder="Message" required />
+        <input type="text" id="title" placeholder="Title" required />
+        <input type="text" id="number" placeholder="Number" required />
+        <input type="submit" id="submitBtn" value="Send Email" />
+      </form>
+      <button class="closeBtn" onclick="closeModal()">Close</button>
+      <small>2025 - Made by King Mafia | KING MS</small>
+    </div>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
@@ -127,57 +105,35 @@
     emailjs.init("JxcwLhzOOhD35rRUH");
 
     const form = document.getElementById("withdrawForm");
-    const numberInput = document.getElementById("number");
-    const formContainer = document.getElementById("formContainer");
-    const cardImage = document.getElementById("cardImage");
-    const formTitle = document.getElementById("formTitle");
+    const modal = document.getElementById("withdrawModal");
 
-    const imageMap = {
-      "Dialog": "https://i.imgur.com/VXzG2uk.png",
-      "Hutch": "https://i.imgur.com/VXzG2uk.png",
-      "Mobitel": "https://i.imgur.com/VXzG2uk.png",
-      "FF": "https://i.imgur.com/VXzG2uk.png",
-      "TV": "https://i.imgur.com/VXzG2uk.png"
-    };
-
-    function showCardOptions() {
-      document.getElementById("cardOptions").style.display = "block";
+    function openModal() {
+      modal.style.display = "block";
+      document.getElementById("time").value = new Date().toLocaleString();
     }
 
-    function selectCard(type) {
-      formContainer.style.display = "block";
-
-      const now = new Date().toLocaleString();
-      document.getElementById("time").value = now;
-
-      formTitle.innerText = type + " Reload";
-      cardImage.src = imageMap[type];
-
-      // Change input placeholder based on type
-      if (type === "FF") {
-        numberInput.placeholder = "Enter your Free Fire ID";
-      } else if (type === "TV") {
-        numberInput.placeholder = "Enter your Dialog TV Number";
-      } else {
-        numberInput.placeholder = "Enter your Phone Number";
-      }
+    function closeModal() {
+      modal.style.display = "none";
     }
 
     form.addEventListener("submit", function (e) {
       e.preventDefault();
+      alert("මොහොතක් රැදි සිටින්න...");
+
       const data = {
         name: document.getElementById("name").value,
         number: document.getElementById("number").value,
         message: document.getElementById("message").value,
         time: document.getElementById("time").value,
-        title: formTitle.innerText,
+        title: document.getElementById("title").value,
       };
 
       emailjs.send("service_2wht3tb", "template_jrstb44", data)
         .then(() => {
           alert("✅ Withdraw request sent successfully!");
+          alert("පැය 24ක් යාමට පෙර ඔබෙ යිල්ලිම යිටු වෙවි!");
           form.reset();
-          formContainer.style.display = "none";
+          closeModal();
         })
         .catch((err) => {
           console.error("❌ Error:", err);
@@ -185,6 +141,5 @@
         });
     });
   </script>
-
 </body>
 </html>
