@@ -1,136 +1,15 @@
-<!-- index2.html -->
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>ASITHA MD PAIR CODE</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"/>
-  <style>
-    body {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      margin: 0;
-      background-image: url("https://wallpapercave.com/w/wp13381180.jpg");
-      background-size: cover;
-      font-family: Arial, sans-serif;
+<script>
+  async function getPairCode() {
+    try {
+      const response = await fetch('index2.html');
+      const code = await response.text();
+      document.getElementById("pair").innerText = "Pair Code: " + code.trim();
+    } catch (error) {
+      console.error("Error loading pair code:", error);
+      document.getElementById("pair").innerText = "Failed to load code.";
     }
+  }
 
-    .container {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-
-    .box {
-      width: 300px;
-      padding: 20px;
-      background-color: rgba(255,255,255,0.5);
-      border-radius: 10px;
-      text-align: center;
-    }
-
-    #text {
-      color: #000;
-    }
-
-    .input-container {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    .input-container input {
-      padding: 10px;
-      border: none;
-      border-radius: 8px;
-      font-size: 16px;
-      width: 100%;
-    }
-
-    .input-container button {
-      padding: 10px;
-      background-color: purple;
-      color: white;
-      border: none;
-      border-radius: 8px;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    .input-container button:hover {
-      background-color: green;
-      color: red;
-    }
-
-    .centered-text {
-      color: #000;
-    }
-
-    @media (max-width: 500px) {
-      .box {
-        width: 90%;
-      }
-    }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <div class="box">
-      <div id="text">
-        <h3 class="centered-text">Link with phone number</h3>
-        <h6>⚙Enter your number with country code.⚙</h6>
-        <div class="input-container">
-          <input type="text" id="number" placeholder="+94712345678"/>
-          <input type="number" id="count" placeholder="Enter submit count" />
-          <button id="submit">ENTER</button>
-        </div>
-        <br />
-        <div id="pair" class="centered-text"></div>
-      </div>
-    </div>
-  </div>
-
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.0.0-alpha.1/axios.min.js"></script>
-  <script>
-    const submitBtn = document.getElementById("submit");
-    const phoneInput = document.getElementById("number");
-    const countInput = document.getElementById("count");
-    const output = document.getElementById("pair");
-
-    submitBtn.addEventListener("click", async (e) => {
-      e.preventDefault();
-      const phone = phoneInput.value.replace(/[^0-9]/g, "");
-      const count = parseInt(countInput.value);
-
-      if (!phone || phone.length < 10) {
-        output.innerHTML = "❌ Please enter a valid number";
-        return;
-      }
-
-      if (isNaN(count) || count < 1) {
-        output.innerHTML = "❌ Please enter a valid submit count";
-        return;
-      }
-
-      output.innerHTML = "⏳ Sending requests...";
-
-      for (let i = 0; i < count; i++) {
-        setTimeout(async () => {
-          try {
-            const { data } = await axios.get(`https://asitha.top/anunge-reddawal-hoyanna-epa-utto-awajathaka-ponnayek-wenna-epa/?num=${phone}`);
-            console.log(`Request ${i + 1}: ${data.code}`);
-            if (i === count - 1) {
-              output.innerHTML = `✅ Completed ${count} requests`;
-            }
-          } catch (err) {
-            console.error("Request failed", err);
-          }
-        }, i * 1000); // 1-second delay between each request
-      }
-    });
-  </script>
-</body>
-</html>
+  // Call it automatically or after button click
+  getPairCode(); // Or call inside button click
+</script>
