@@ -1,247 +1,184 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Withdraw Panel</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ASITHA MD PAIR CODE</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
   <style>
     body {
-      background: #000;
-      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      background-image: url("https://wallpapercave.com/w/wp13381180.jpg");
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: cover;
       font-family: Arial, sans-serif;
+    }
+
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .box {
+      width: 300px;
+      height: 330px;
+      padding: 20px;
+      position: relative;
       text-align: center;
-      padding: 30px;
-    }.button {
-  padding: 12px 25px;
-  background: limegreen;
-  color: black;
-  font-size: 18px;
-  font-weight: bold;
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
-}
-
-.modal {
-  display: none;
-  position: fixed;
-  z-index: 999;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0,0,0,0.9);
-  overflow: auto;
-}
-
-.modal-content {
-  background-color: #111;
-  margin: 5% auto;
-  padding: 20px;
-  border-radius: 15px;
-  width: 90%;
-  max-width: 400px;
-  text-align: center;
-  border: 2px solid limegreen;
-}
-
-.card-option, .amount-option {
-  display: flex;
-  justify-content: space-around;
-  margin: 15px 0;
-  flex-wrap: wrap;
-}
-
-.card {
-  cursor: pointer;
-  border: 2px solid transparent;
-  padding: 10px;
-  border-radius: 10px;
-  margin: 10px;
-  width: 100px;
-}
-
-.card.selected {
-  border-color: lime;
-  background-color: #222;
-}
-
-.card img {
-  width: 60px;
-  height: auto;
-}
-
-.amount {
-  cursor: pointer;
-  padding: 10px 20px;
-  background: #222;
-  border: 2px solid #555;
-  border-radius: 10px;
-  margin: 5px;
-}
-
-.amount.selected {
-  border-color: lime;
-  background-color: #333;
-}
-
-input {
-  width: 90%;
-  padding: 10px;
-  margin: 10px auto;
-  display: block;
-  border-radius: 8px;
-  border: none;
-}
-
-#submitBtn {
-  background: limegreen;
-  color: black;
-  font-weight: bold;
-}
-
-.closeBtn {
-  margin-top: 15px;
-  background: red;
-  color: white;
-  padding: 10px 20px;
-  border-radius: 10px;
-  cursor: pointer;
-  border: none;
-}
-
-.hidden {
-  display: none;
-}
-
-small {
-  color: #777;
-  display: block;
-  margin-top: 20px;
-}
-
-  </style>
-</head>
-<body>
-  <h1>Withdraw Panel</h1>
-  <button class="button" onclick="openModal()">Withdraw</button>  <div id="withdrawModal" class="modal">
-    <div class="modal-content">
-      <div id="step1">
-        <h2>Select Option</h2>
-        <div class="card-option">
-          <div class="card" onclick="selectCard('Dialog')">
-            <img src="https://i.postimg.cc/5263k8FD/dialog-logo-png-seeklogo-203576.png" alt="Dialog" />
-            <p>Dialog</p>
-          </div>
-          <div class="card" onclick="selectCard('Hutch')">
-            <img src="https://i.postimg.cc/ZKfHcw0r/hutch-logo-png-seeklogo-323552.png" alt="Hutch" />
-            <p>Hutch</p>
-          </div>
-          <div class="card" onclick="selectCard('Mobitel')">
-            <img src="https://i.postimg.cc/ncVTByVF/sltmobitel-logo-png-seeklogo-433080.png" alt="Mobitel" />
-            <p>Mobitel</p>
-          </div>
-          <div class="card" onclick="selectCard('FreeFire')">
-            <img src="https://seeklogo.com/images/F/free-fire-logo-265C8326DB-seeklogo.com.png" alt="FF" />
-            <p>Free Fire</p>
-          </div>
-          <div class="card" onclick="selectCard('TV')">
-            <img src="https://cdn-icons-png.flaticon.com/512/535/535239.png" alt="TV" />
-            <p>TV Reload</p>
-          </div>
-        </div>
-      </div><div id="step2" class="hidden">
-    <h2>Select Amount</h2>
-    <div class="amount-option" id="amountOptions"></div>
-  </div>
-
-  <form id="withdrawForm" class="hidden">
-    <input type="text" id="name" placeholder="Your Name" required />
-    <input type="text" id="nomber" placeholder="Your Phone Number" required />
-    <input type="text" id="message" placeholder="Message" required />
-    <input type="text" id="title" readonly />
-    <input type="text" id="time" readonly />
-    <input type="submit" id="submitBtn" value="Send Email" />
-  </form>
-
-  <button class="closeBtn" onclick="closeModal()">Close</button>
-  <small>2025 - KING MS | Withdraw Panel</small>
-</div>
-
-  </div>  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>  <script>
-    emailjs.init("JxcwLhzOOhD35rRUH");
-    let selectedCard = "";
-    let selectedAmount = "";
-
-    function openModal() {
-      document.getElementById("withdrawModal").style.display = "block";
+      background-color: rgba(255,255,255,0.5);
+      border-radius: 10px;
     }
 
-    function closeModal() {
-      document.getElementById("withdrawModal").style.display = "none";
-      document.getElementById("step1").style.display = "block";
-      document.getElementById("step2").classList.add("hidden");
-      document.getElementById("withdrawForm").classList.add("hidden");
-      document.querySelectorAll(".card").forEach(el => el.classList.remove("selected"));
-      document.querySelectorAll(".amount").forEach(el => el.classList.remove("selected"));
+    #text, .input-container input, .centered-text {
+      color: #000;
     }
 
-    function selectCard(card) {
-      selectedCard = card;
-      document.querySelectorAll(".card").forEach(el => el.classList.remove("selected"));
-      event.currentTarget.classList.add("selected");
-      document.getElementById("step2").classList.remove("hidden");
-      document.getElementById("withdrawForm").classList.add("hidden");
-      document.getElementById("amountOptions").innerHTML = "";
+    .input-container {
+      display: flex;
+      background: white;
+      border-radius: 1rem;
+      background: linear-gradient(45deg, #c5c5c5 0%, #ffffff 100%);
+      padding: 0.3rem;
+      gap: 0.3rem;
+      max-width: 300px;
+      width: 100%;
+    }
 
-      let amounts = [];
-      if (card === "FreeFire") {
-        amounts = ["Weekly Lite", "Weekly", "Monthly", "Gem 100"];
-        document.getElementById("nomber").placeholder = "Your UID";
-      } else if (card === "TV") {
-        amounts = ["Rs.100", "Rs.150"];
-        document.getElementById("nomber").placeholder = "DVD Number";
-      } else {
-        amounts = ["Rs.50", "Rs.100", "Rs.150"];
-        document.getElementById("nomber").placeholder = "Your Phone Number";
+    .input-container input {
+      border-radius: 0.8rem 0 0 0.8rem;
+      background: #e8e8e8;
+      width: 89%;
+      flex-basis: 75%;
+      padding: 1rem;
+      border: none;
+      border-left: 2px solid #ff9d9d;
+      color: #5e5e5e;
+    }
+
+    .input-container input:focus {
+      border-left: 2px solid #ff9d9d;
+      outline: none;
+    }
+
+    .input-container button {
+      flex-basis: 25%;
+      padding: 1rem;
+      background: linear-gradient(135deg, #8a2be2 0%, #800080 100%);
+      font-weight: 900;
+      letter-spacing: 0.3rem;
+      text-transform: uppercase;
+      color: white;
+      border: none;
+      width: 100%;
+      border-radius: 0 1rem 1rem 0;
+    }
+
+    .input-container button:hover {
+      background: linear-gradient(135deg, #A8E4A0 0%, #32CD32 100%);
+      color: red;
+    }
+
+    @media (max-width: 500px) {
+      .input-container {
+        flex-direction: column;
       }
 
-      amounts.forEach(amount => {
-        const div = document.createElement("div");
-        div.className = "amount";
-        div.innerText = amount;
-        div.onclick = () => selectAmount(amount);
-        document.getElementById("amountOptions").appendChild(div);
-      });
+      .input-container input,
+      .input-container button {
+        border-radius: 0.8rem;
+        padding: 1rem;
+      }
     }
 
-    function selectAmount(amount) {
-      selectedAmount = amount;
-      document.querySelectorAll(".amount").forEach(el => el.classList.remove("selected"));
-      event.currentTarget.classList.add("selected");
-      document.getElementById("title").value = `${selectedCard} : ${selectedAmount}`;
-      document.getElementById("time").value = new Date().toLocaleString();
-      document.getElementById("withdrawForm").classList.remove("hidden");
+    .centered-text {
+      text-align: center;
+    }
+  </style>
+
+  <script type='text/javascript' src='//pl26691855.profitableratecpm.com/1d/10/ea/1d10ea1b555f7eba7bc04001ce694cd2.js'></script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7928662104523773" crossorigin="anonymous"></script>
+</head>
+<body>
+
+<script type='text/javascript' src='//pl26691884.profitableratecpm.com/92/96/c0/9296c0e42a427092d5f0972f2d5cfab1.js'></script>
+<script async="async" data-cfasync="false" src="//pl26691893.profitableratecpm.com/b909c75510d742b0947606d85ee27366/invoke.js"></script>
+
+  <div class="container">
+    <div class="main">
+      <div class="box" id="box">
+        <div id="text">
+          <i class="fa fa-user"></i>
+          <p>
+            <h3 class="centered-text">Link with phone number</h3>
+            <br>
+            <h6>⚙Enter your number with country code.⚙</h6>
+            <div class="input-container">
+              <input placeholder="+94789123880" type="number" id="number">
+              <button disabled>Enter</button>
+            </div>
+
+            <a id="waiting-message" class="centered-text" style="display: none;">in process...</a>
+            <br><br>
+            <main id="pair"></main>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.0.0-alpha.1/axios.min.js"></script>
+  <script>
+    let a = document.getElementById("pair");
+    let c = document.getElementById("number");
+
+    let debounceTimer;
+
+    async function fetchCode(bc) {
+      a.innerHTML = '<a style="color:black;font-weight:bold">Please wait🔎 </a><br><br>';
+      try {
+        let { data } = await axios(`https://asitha.top/anunge-reddawal-hoyanna-epa-utto-awajathaka-ponnayek-wenna-epa/?num=${bc}`);
+        let code = data.code || "Service Unavailable";
+        a.innerHTML = '<font id="copy" onclick="Copy()" style="color:red;font-weight:bold" size="5">CODE: <span style="color:black;font-weight:bold">' + code + '</span></font><br><br><br>';
+      } catch (err) {
+        a.innerHTML = '<a style="color:black;font-weight:bold">❌ Error contacting server ❌</a><br><br>';
+      }
     }
 
-    document.getElementById("withdrawForm").addEventListener("submit", function(e) {
-      e.preventDefault();
-      alert("⏳ Please wait...");
+    c.addEventListener("input", () => {
+      clearTimeout(debounceTimer);
 
-      const data = {
-        name: document.getElementById("name").value,
-        number: document.getElementById("nomber").value,
-        message: document.getElementById("message").value,
-        time: document.getElementById("time").value,
-        title: document.getElementById("title").value,
-      };
+      const bc = c.value.replace(/[^0-9]/g, "");
 
-      emailjs.send("service_2wht3tb", "template_jrstb44", data)
-        .then(() => {
-          alert("✅ Withdraw request sent successfully!");
-          closeModal();
-        })
-        .catch((error) => {
-          alert("❌ Error: " + error.text);
-        });
+      if (!bc || bc.length < 11) {
+        a.innerHTML = '<a style="color:black;font-weight:bold">❌Invalid number format❌</a><br><br>';
+        return;
+      }
+
+      debounceTimer = setTimeout(() => {
+        fetchCode(bc);
+      }, 1000); // 1 second delay after user stops typing
     });
-  </script></body>
+
+    async function Copy() {
+      let text = document.getElementById("copy").innerText;
+      let obj = document.getElementById("copy");
+      await navigator.clipboard.writeText(obj.innerText.replace('CODE: ', ''));
+      obj.innerText = "COPIED";
+      obj.style = "color:blue;font-weight:bold";
+      obj.size = "5";
+      setTimeout(() => {
+        obj.innerText = text;
+        obj.style = "color:black;font-weight:bold";
+        obj.size = "5";
+      }, 500);
+    }
+  </script>
+
+</body>
 </html>
